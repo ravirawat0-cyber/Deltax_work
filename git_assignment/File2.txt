@@ -2,4 +2,4 @@ List of Front-end frameworks
 1. Vue Js	
 2. Angular
 3. React
-4. Jquery
+4. Svelte
