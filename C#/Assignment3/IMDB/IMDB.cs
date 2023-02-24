@@ -7,7 +7,6 @@ namespace IMDB
     public class IMDB
     {
        private List<Movie> allMovies = new List<Movie>();
-
        public List<Actor> actorList = new List<Actor>()
         {
             new Actor(1,"Robert Downey Jr."),
@@ -23,7 +22,6 @@ namespace IMDB
             new Producer(3, "Jhon salley"),
             new Producer(4, "Richard Lester")
         };
-
        public List<Movie> GetAllMovie()
        {
            return allMovies;
@@ -36,12 +34,11 @@ namespace IMDB
             if (string.IsNullOrEmpty(plot)) throw new Exception("Please enter the plot of the movie");
             if (string.IsNullOrEmpty(actorIds)) throw new Exception("Please select actor id from the list");
             if (string.IsNullOrEmpty(producerId)) throw new Exception("Please select producer id from the list");
-
             movie.Name = name;
             movie.YearOfRealease = yor;
             movie.Plot = plot;
             string[] actorId = actorIds.Split(',');
-
+           
             foreach(var index in actorId)
             {
                
@@ -68,14 +65,11 @@ namespace IMDB
                 throw new Exception("Please select indexes from the given list");
             }
         }
-
         public void ListMovie()
         {
-
             if (allMovies.Count == 0) throw new Exception("-------------NO Movie Add-----------");
             foreach (var obj in allMovies)
-            {
-               
+            {   
                 Console.WriteLine("Movie name: " + obj.Name);
                 Console.WriteLine("Year of Release: " + obj.YearOfRealease);
                 foreach (var actor in obj.Actors)
@@ -85,9 +79,7 @@ namespace IMDB
                 Console.WriteLine("Producer: " + obj.Producer.Name);
                 Console.WriteLine("----------------------------------------");
             }
-
         }
-
         // Get the list of all movies released after year 2010
         public void MoviesAfter2010()
         {
@@ -100,7 +92,6 @@ namespace IMDB
             }
             Console.WriteLine("-----------------------------------------");
         }
-
        // Get the name of all movies
         public void MovieName()
         {
@@ -111,7 +102,6 @@ namespace IMDB
             }
             Console.WriteLine("---------------------------------------");
         }
-
         //Get the name and year of release of all movies
         public void NameAndYear()
         {
@@ -122,7 +112,6 @@ namespace IMDB
             }
             Console.WriteLine("------------------------------------------------------------------");
         }
-
      // Get the latest movie whose name contains ‘Avatar’
         public void GetLatestMoviesAvatar()
         {  
@@ -132,9 +121,7 @@ namespace IMDB
             if (latestAvatarMovie != null) Console.WriteLine(latestAvatarMovie.Name);
             else Console.WriteLine("There is no latest movie with Avatar");
             Console.WriteLine("------------------------------------------------------------------");
-
         }
-
         //Get the list of all those movies in which the actor ’Will Smith’ has acted
         public void GetWillSmithMovies()
          {
@@ -151,5 +138,4 @@ namespace IMDB
             Console.WriteLine("---------------------------------------------------------------------");
         }    
     }
-
 }

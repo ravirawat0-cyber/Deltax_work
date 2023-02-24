@@ -5,7 +5,6 @@ namespace IMDB
 {
     partial class Program 
     {   
-
         static void Main(string[] args)
         {
             IMDB movieService = new IMDB();
@@ -90,9 +89,6 @@ namespace IMDB
                 }
                 producerId = Console.ReadLine();
             }
-        }
-
-     
-    }
-   
+        } 
+    }   
 }

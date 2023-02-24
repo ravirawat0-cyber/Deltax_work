@@ -30,7 +30,6 @@ namespace SpecFlowWork.StepDefinitions
             plot = table.Rows[0]["Plot"];
             actorIds = table.Rows[0]["Actors"];
             producerId = table.Rows[0]["Producer"];
-
         }
 
         [Then(@"Movie add to the list")]
@@ -38,15 +37,15 @@ namespace SpecFlowWork.StepDefinitions
         {
            
             movieIMDB.AddMovie(movieName, int.Parse(yearOfRealease), plot, actorIds, producerId);
-        }                                                                             
-
+        }  
+                                                                                   
         [Then(@"The movie list look like this '([^']*)'")]
         public void ThenTheMovieListLookLikeThis(string expectedMovies)
         {
             var actualMovies = JsonConvert.SerializeObject(movieIMDB.GetAllMovie());
             Assert.AreEqual(expectedMovies, actualMovies);
         }
-        
+
         [BeforeScenario("ListMovie")]
         public void AddSampleMovieForAdd()
         {
