@@ -23,9 +23,9 @@ namespace IMDB
             new Producer(4, "Richard Lester")
         };
        public List<Movie> GetAllMovie()
-       {
-           return allMovies;
-       }
+        {
+            return allMovies;
+        }
         public void AddMovie( string name ,int yor,string plot, string actorIds, string producerId)
         {
             var movie = new Movie();
