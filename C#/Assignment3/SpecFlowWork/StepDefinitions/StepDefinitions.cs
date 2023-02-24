@@ -46,9 +46,7 @@ namespace SpecFlowWork.StepDefinitions
             var actualMovies = JsonConvert.SerializeObject(movieIMDB.GetAllMovie());
             Assert.AreEqual(expectedMovies, actualMovies);
         }
-
-
-
+        
         [BeforeScenario("ListMovie")]
         public void AddSampleMovieForAdd()
         {
@@ -73,10 +71,6 @@ namespace SpecFlowWork.StepDefinitions
         {
             var actualMovies = JsonConvert.SerializeObject(movieList);
             Assert.AreEqual(expectedMovies, actualMovies);
-        }
-
-      
-
-     
+        } 
     }
 }

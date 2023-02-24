@@ -11,7 +11,6 @@ Scenario: User adds a new movie
 	Then Movie add to the list
 	Then The movie list look like this '[{"Actors":[{"Name":"Robert Downey Jr.","Id":1}],"Name":"IronMan","YearOfRealease":2009,"Plot":"Iron suit","Producer":{"Name":"Kevin Feige","Id":1}}]'
 	
-
 @ListMovie
 Scenario: User views a list of all movies
 	Given the user select List Movie

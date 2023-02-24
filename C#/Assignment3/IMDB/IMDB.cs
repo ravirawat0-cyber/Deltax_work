@@ -37,7 +37,6 @@ namespace IMDB
             if (string.IsNullOrEmpty(actorIds)) throw new Exception("Please select actor id from the list");
             if (string.IsNullOrEmpty(producerId)) throw new Exception("Please select producer id from the list");
 
-           
             movie.Name = name;
             movie.YearOfRealease = yor;
             movie.Plot = plot;
@@ -150,10 +149,7 @@ namespace IMDB
             }
             else Console.WriteLine("There is no movie in which actor will smith worked as actor");
             Console.WriteLine("---------------------------------------------------------------------");
-
-        }
-
-       
+        }    
     }
 
 }
