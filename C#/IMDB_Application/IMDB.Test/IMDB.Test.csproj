@@ -20,4 +20,8 @@
     <Folder Include="Support\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\IMDB\IMDB.csproj" />
+  </ItemGroup>
+
 </Project>
