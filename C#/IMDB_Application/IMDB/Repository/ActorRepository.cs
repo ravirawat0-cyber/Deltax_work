@@ -19,7 +19,7 @@ namespace IMDB.Repository
         };
     
 
-        public List<Actor> GetAllActors()
+        public List<Actor> GetAll()
         {
             return _actorList;
         }

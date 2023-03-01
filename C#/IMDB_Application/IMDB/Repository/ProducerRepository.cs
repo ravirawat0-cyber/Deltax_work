@@ -17,7 +17,7 @@ namespace IMDB.Repository
             new Producer(3, "Jhon salley", DateTime.Parse("05/16/1964")),
             new Producer(4, "Richard Lester", DateTime.Parse("01/19/1932"))
         };
-        public List<Producer> GetAllProducers()
+        public List<Producer> GetAll()
         {
             return _producerList;
         }

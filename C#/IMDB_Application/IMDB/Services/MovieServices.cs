@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using IMDB.Domain;
 using IMDB.Repository;
@@ -25,27 +27,20 @@ namespace IMDB.Services
 
         public List<Movie> GetAllMovies()
         {
-            return _movieRepository.GetAllMovies();
+            return _movieRepository.GetAll();
         }
 
-        public void AddMovie(string name, int yearOfRelease, string plot, string actorIds, string producerId)
+        public void AddMovie(string name, string yearOfRelease, string plot, string actorIds, string producerId)
         {
             var movie = new Movie();
-            if (string.IsNullOrEmpty(name)) throw new Exception("Movie name cannot be Empty");
-            if (yearOfRelease == 0) throw new Exception("Please enter year of release");
-            if (string.IsNullOrEmpty(plot)) throw new Exception("Please enter the plot of the movie");
-            if (string.IsNullOrEmpty(actorIds)) throw new Exception("Please select actor id from the list");
-            if (string.IsNullOrEmpty(producerId)) throw new Exception("Please select producer id from the list");
-
-            // Impletment auto assign id 
-            var movieList = _movieRepository.GetAllMovies();
+            var movieList = _movieRepository.GetAll();
             movie.Id = movieList.Any() ? movieList.Max(obj => obj.Id) + 1 : 1;       
             movie.Name = name;
-            movie.YearOfRelease = yearOfRelease;
+            movie.YearOfRelease = int.Parse(yearOfRelease);
             movie.Plot = plot;
-            string[] actorId = actorIds.Split(',');
+            string[] actorIDs = actorIds.Split(',');
 
-            foreach (var index in actorId)
+            foreach (var index in actorIDs)
             {
                 movie.Actors.Add(_actorServices.GetActorById(int.Parse(index)));
             }
@@ -56,7 +51,7 @@ namespace IMDB.Services
 
         public void DeleteMovieById(int id)
         {
-            if (id == 0) throw new Exception("Enter valid id");
+            if (_movieRepository.GetAll().Count < id) throw new Exception();
             _movieRepository.DeleteMovie(id);
         }
     }

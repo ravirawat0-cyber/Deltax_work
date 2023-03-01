@@ -20,7 +20,7 @@ namespace IMDB.Services
         }
         public List<Actor> GetAllActors()
         {
-            return _actorRepository.GetAllActors();
+            return _actorRepository.GetAll();
         }
 
         public Actor GetActorById(int id)
@@ -30,10 +30,8 @@ namespace IMDB.Services
 
         public void AddActor(string name, string dateOfBirth)
         {
-            if (string.IsNullOrEmpty(name)) throw new Exception("Actor name cannot be empty ");
-            if (string.IsNullOrEmpty(dateOfBirth)) throw new Exception("Date of cannot be empty");
             var actor = new Actor();
-            actor.Id = _actorRepository.GetAllActors().Max(a => a.Id) + 1;
+            actor.Id = _actorRepository.GetAll().Max(a => a.Id) + 1;
             actor.Name = name;
             actor.DateOfBirth = DateTime.Parse(dateOfBirth);
             _actorRepository.AddActor(actor);

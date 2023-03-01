@@ -9,7 +9,7 @@ namespace IMDB.Repository.Interfaces
 {
     public interface IActorRepository
     {
-        List<Actor> GetAllActors();
+        List<Actor> GetAll();
         Actor GetActorById(int id);
         void AddActor(Actor actor);
     }

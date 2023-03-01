@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography.X509Certificates;
+﻿using System.Globalization;
+using System.Security.Cryptography.X509Certificates;
 using System.Xml.Linq;
 using IMDB.Domain;
 using IMDB.Repository;
@@ -11,7 +12,6 @@ namespace IMDB
     {
         static void Main(string[] args)
         {
-            
             IActorServices actorServices = new ActorServices();
             IProducerService producerServices = new ProducerServices();
             var movieServices = new MovieServices();
@@ -27,33 +27,83 @@ namespace IMDB
                 switch (input)
                 {
                     case 1:
-                        try
+                    
+                        string name, yor, plot, actorIds, producerId;        
+                        while (true)
                         {
-                            Console.WriteLine("Enter name of the movie: ");
-                            string name = Console.ReadLine();
-                            Console.WriteLine("Enter yor of release of the movie");
-                            int yor = Convert.ToInt32(Console.ReadLine());
-                            Console.WriteLine("Enter the plot of movie: ");
-                            string plot = Console.ReadLine();
-                            Console.Write("Select actors form the list (comma seperated):\n ");
-                            foreach (Actor actor in actorServices.GetAllActors())
+                            try
                             {
-                                Console.WriteLine(actor.Id + " " + actor.Name);
+                                Console.WriteLine("Enter a movie Name: ");
+                                name = Console.ReadLine();
+                                if (string.IsNullOrEmpty(name)) throw new Exception();
+                                break;
                             }
-                            string actorIds = Console.ReadLine();
-                            Console.WriteLine("Select producer from the list: ");
-                            foreach (var producer in producerServices.GetAllProducers())
-                            {
-                                Console.WriteLine(producer.Id + " " + producer.Name);
-                            }
-                            string producerId = Console.ReadLine();
-                            movieServices.AddMovie(name, yor, plot, actorIds, producerId);
-                            Console.WriteLine("-------------New Movie added-------------");
+                            catch (Exception e) { Console.WriteLine("----Please enter valid movie name-----"); }
                         }
-                        catch (Exception e)
+
+                        while (true)
                         {
-                            Console.WriteLine(e);
+                            try
+                            {
+                                Console.WriteLine("Enter yor of release of the movie");
+                                yor = Console.ReadLine();
+                                if (yor == null || !(int.TryParse(yor, out int check))) throw new Exception();
+                                break;
+                            }
+                            catch (Exception e) { Console.WriteLine("----Please enter valid Year of Release-----"); }
                         }
+                        while (true)
+                        {
+                            try
+                            {
+
+                                Console.WriteLine("Enter the plot of movie: ");
+                                plot = Console.ReadLine();
+                                if (string.IsNullOrEmpty(plot)) throw new Exception();
+                                break;
+                            }
+                            catch (Exception e) { Console.WriteLine("----Movie plot cannot be empty-----"); }
+                        }
+
+                        while (true)
+                        {
+                            try
+                            {
+                                Console.Write("Select actors form the list (comma seperated):\n");
+                                foreach (Actor actor in actorServices.GetAllActors())
+                                {
+                                    Console.WriteLine(actor.Id + " " + actor.Name);
+                                }
+                                actorIds = Console.ReadLine();
+                                string[] actorIdArray = actorIds.Split(',');
+                                if (string.IsNullOrEmpty(actorIds) ) throw new Exception();
+                                foreach (var id  in actorIdArray)
+                                {
+                                     if (int.Parse(id) > actorServices.GetAllActors().Count || !(int.TryParse(id, out int check))) throw new Exception();
+                                }
+                                break;
+                            }
+                            catch (Exception e) { Console.WriteLine("-------Enter valid Id--------"); }
+                        }
+
+                        while (true)
+                        {
+                            try
+                            {
+
+                                Console.WriteLine("Select producer from the list: ");
+                                foreach (var producer in producerServices.GetAllProducers())
+                                {
+                                    Console.WriteLine(producer.Id + " " + producer.Name);
+                                }
+                                producerId = Console.ReadLine();
+                                if (string.IsNullOrEmpty(producerId) || int.Parse(producerId) > producerServices.GetAllProducers().Count || !(int.TryParse(producerId, out int check))) throw new Exception();
+                                break;
+                            }
+                            catch (Exception e) { Console.WriteLine("-------Enter valid Id--------"); }
+                        }
+                        movieServices.AddMovie(name, yor, plot, actorIds, producerId);
+                        Console.WriteLine("-------------New Movie added-------------");
                         break;
 
                     case 2:
@@ -80,39 +130,83 @@ namespace IMDB
                         break;
 
                     case 3:
-                        Console.WriteLine("Enter the Actor Name: ");
-                        string actorName = Console.ReadLine();
-
-                        Console.WriteLine("Enter the DOB in MM/DD/YY: ");
-                        string dobActor = Console.ReadLine();
-
+                        string actorName, dobActor;
+                        while (true)
+                        {
+                            try
+                            {
+                                Console.WriteLine("Enter the Actor Name: ");
+                                actorName = Console.ReadLine();
+                                if(string.IsNullOrEmpty(actorName) || int.TryParse(actorName, out int valid)) throw new Exception();
+                                break;
+                            }
+                            catch (Exception e) { Console.WriteLine("----Please enter valid actorName---- "); }
+                        }
+                        while (true)
+                        {
+                            try
+                            {
+                                Console.WriteLine("Enter the Date of Birth (MM/dd/yyyy): ");
+                                dobActor = Console.ReadLine();
+                                if (string.IsNullOrEmpty(dobActor) || !(DateTime.TryParseExact(dobActor, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime parsedDate))) throw new Exception();
+                                break;
+                            }
+                            catch (Exception e) { Console.WriteLine("----Please enter valid DOB in MM/dd/yyyy---- "); }
+                        }
                         actorServices.AddActor( actorName,  dobActor);
                         Console.WriteLine("--------------------------------------------");
                         break;
 
                     case 4:
-                        Console.WriteLine("Enter the Producer Name: ");
-                        string producerName = Console.ReadLine();
-                        Console.WriteLine("Enter the DOB in MM/DD/YY: ");
-                        string dobProducer = Console.ReadLine();
-
+                        string producerName, dobProducer;
+                        while (true)
+                        {
+                            try
+                            {
+                                Console.WriteLine("Enter the Producer Name: ");
+                                producerName = Console.ReadLine();
+                                if (string.IsNullOrEmpty(producerName) || int.TryParse(producerName, out int valid)) throw new Exception();
+                                break;
+                            }
+                            catch (Exception e) { Console.WriteLine("----Please enter valid producerName---- "); }
+                        }
+                        while (true)
+                        {
+                            try
+                            {
+                                Console.WriteLine("Enter the Date of Birth (MM/dd/yyyy): ");
+                                dobProducer = Console.ReadLine();
+                                // if (string.IsNullOrEmpty(dobProducer) || int.TryParse(producerName, out int valid)) throw new Exception();
+                                if (string.IsNullOrEmpty(dobProducer) ||!(DateTime.TryParseExact(dobProducer, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime parsedDate))) throw new Exception();
+                                break;
+                            }
+                            catch (Exception e) { Console.WriteLine("----Please enter valid DOB in MM/dd/yyyy---- "); }
+                        }
                         producerServices.AddProducer(producerName, dobProducer);
+                        Console.WriteLine("--------------------------------------------");
                         break;
 
                     case 5:
-                        if (movieServices.GetAllMovies().Count > 0)
+                        while (true)
                         {
-                            foreach (var obj in movieServices.GetAllMovies())
+                            try
                             {
-                                Console.WriteLine(obj.Id + " " + obj.Name);
+                                if (movieServices.GetAllMovies().Count == 0)
+                                {
+                                    Console.WriteLine("-------There is no movie to delete--------");
+                                    break;
+                                }
+                                Console.WriteLine("Enter the Id to Delete Movie: ");
+                                foreach (var obj in movieServices.GetAllMovies())
+                                {
+                                    Console.WriteLine(obj.Id + " " + obj.Name);
+                                }
+                                var movieId = int.Parse(Console.ReadLine());
+                                movieServices.DeleteMovieById(movieId);
+                                Console.WriteLine("-------------Movie is Deleted------------");
+                                break;
                             }
-                            var movieId = int.Parse(Console.ReadLine());
-                            movieServices.DeleteMovieById(movieId);
-                            Console.WriteLine("-------------Movie is Deleted------------");
-                        }
-                        else
-                        {
-                            Console.WriteLine("There is No movie stored ");
+                            catch (Exception e) { Console.WriteLine("----Please enter valid ID----- "); }
                         }
                         break;
                     case 6:

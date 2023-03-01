@@ -16,7 +16,7 @@ namespace IMDB.Repository
             _movieList = new List<Movie>();
         }
 
-        public List<Movie> GetAllMovies()
+        public List<Movie> GetAll()
         {
             return _movieList;
         }
@@ -29,11 +29,6 @@ namespace IMDB.Repository
         public void DeleteMovie(int id)
         {
             _movieList.RemoveAll(m => m.Id == id);
-            //adjusting the id 
-            for (int i = 0; i < _movieList.Count; i++)
-            {
-                _movieList[i].Id = i + 1;
-            }
         }
     }
 }

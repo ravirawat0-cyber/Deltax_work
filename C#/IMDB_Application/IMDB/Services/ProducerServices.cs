@@ -20,7 +20,7 @@ namespace IMDB.Services
         }
         public List<Producer> GetAllProducers()
         {
-            return _producerRepository.GetAllProducers();
+            return _producerRepository.GetAll();
         }
 
         public Producer GetProducerById(int id)
@@ -34,7 +34,7 @@ namespace IMDB.Services
             if (string.IsNullOrEmpty(dateOfBirth)) throw new Exception("Date of cannot be empty");
          
             var producer = new Producer();
-            producer.Id = _producerRepository.GetAllProducers().Max(a => a.Id) + 1;
+            producer.Id = _producerRepository.GetAll().Max(a => a.Id) + 1;
             producer.Name = name;
             producer.DateOfBirth = DateTime.Parse(dateOfBirth);
             _producerRepository.AddProducer(producer);

@@ -9,7 +9,7 @@ namespace IMDB.Repository.Interfaces
 {
     public interface IMovieRepository
     {
-        List<Movie> GetAllMovies();
+        List<Movie> GetAll();
         void AddMovie(Movie movie);
         void DeleteMovie(int id);
     }
