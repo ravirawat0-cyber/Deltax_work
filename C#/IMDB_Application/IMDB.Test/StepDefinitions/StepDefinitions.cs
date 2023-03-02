@@ -14,6 +14,7 @@ namespace IMDB.Test.StepDefinitions
         private MovieServices _movieServices = new MovieServices();
         private string name, yor, plot, actorIds, producerId;
         List<Movie> movieList = new List<Movie>();
+        private Exception _exception;
 
         [Given(@"The user select option (.*)")]
         public void GivenTheUserSelectOption(int p0)
@@ -80,12 +81,22 @@ namespace IMDB.Test.StepDefinitions
             _movieServices.AddMovie("Batman", "2005", "Dark knight rises" , "2,3", "1");
         }
 
+        // delete movie valid case 
+
         [Given(@"The user chose option (.*) from the available options")]
         public void GivenTheUserChoseOptionFromTheAvailableOptions(int p0)
         {
             if (p0 == 5) Console.WriteLine("User selected delete movie option");
         }
 
+        [Given(@"The list of movie name with id shown:")]
+        public void GivenTheListOfMovieNameWithIdShown(Table table)
+        {
+            foreach (var row in table.Rows)
+            {
+                Console.WriteLine(row["Id"] + " " + row["Name"]);
+            }
+        }
         [When(@"The user delete the movie through Id from the list (.*)")]
         public void WhenTheUserDeleteTheMovieThroughIdFromTheList(int id)
         {
@@ -97,6 +108,87 @@ namespace IMDB.Test.StepDefinitions
         {
             var actualMovies = JsonConvert.SerializeObject(_movieServices.GetAllMovies());
             Assert.AreEqual(actualMovies, expectedMovies);
+        }
+
+
+        //-----add movie invalid case---
+        [Given(@"The user select options: (.*)")]
+        public void GivenTheUserSelectOptions(int p0)
+        {
+            if (p0 == 1) Console.WriteLine("user selected add movie option");
+        }
+        [When(@"User Request to add movie with following invalid details:")]
+        public void WhenUserRequestToAddMovieWithFollowingInvalidDetails(Table table)
+        {
+            name = table.Rows[0]["Name"];
+            yor = table.Rows[0]["YearOfRelease"];
+            plot = table.Rows[0]["Plot"];
+            actorIds = table.Rows[0]["ActorIds"];
+            producerId = table.Rows[0]["ProducerId"];
+
+        }
+
+        [Then(@"Movie with following detail add to the list")]
+        public void ThenMovieWithFollowingDetailAddToTheList()
+        {
+            try
+            {
+                _movieServices.AddMovie(name, yor, plot,actorIds, producerId);
+            }
+            catch (Exception e)
+            {
+                _exception = e;
+            }
+        }
+
+        [Then(@"The response message should be '([^']*)'")]
+        public void ThenTheResponseMessageShouldBe(string expectedResponse)
+        {
+            Console.WriteLine(_exception.Message);
+            Assert.AreEqual(expectedResponse, _exception.Message);
+        }
+
+     //   Delete movie invalid case
+
+         [BeforeScenario("InvalidCaseDeleteMovie")]
+         public void AddSamplesMovieAdd()
+         {
+             _movieServices.AddMovie("IronMan", "2009", "Iron suit", "1", "1");
+             _movieServices.AddMovie("Batman", "2005", "Dark knight rises", "2,3", "1");
+         }
+
+        [Given(@"The user choose option (.*) from the available options")]
+        public void GivenTheUserChooseOptionFromTheAvailableOptions(int p0)
+        {
+            if (p0 == 5) Console.WriteLine("User selected delete movie option");
+        }
+
+        [Given(@"the list of movie name with ID shown")]
+        public void GivenTheListOfMovieNameWithIDShown(Table table)
+        {
+            foreach (var row in table.Rows)
+            {
+                Console.WriteLine(row["Id"] + " " + row["Name"]);
+            }
+        }
+
+        [When(@"The user want to delete movie with id (.*)")]
+        public void WhenTheUserWantToDeleteMovieWithId(int id)
+        {
+            try
+            {
+                _movieServices.DeleteMovieById(id);
+            }
+            catch (Exception e)
+            {
+                _exception = e;
+            }
+        }
+
+        [Then(@"Then the response should be '([^']*)'")]
+        public void ThenThenTheResponseShouldBe(string expectedResponse)
+        {
+            Assert.AreEqual(_exception.Message, expectedResponse);
         }
     }
 }
