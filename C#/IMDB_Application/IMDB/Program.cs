@@ -144,8 +144,7 @@ namespace IMDB
 
                     case 3:
                         string actorName, dobActor;
-                        bool validationInput = true;
-                        while (validationInput)
+                        while (true)
                         {
                             try
                             {
@@ -171,8 +170,7 @@ namespace IMDB
 
                     case 4:
                         string producerName, dobProducer;
-                        bool continueInput = true;
-                        while (continueInput)
+                        while (true)
                         {
                             try
                             {
