@@ -54,7 +54,6 @@ namespace IMDB.Test.StepDefinitions
         public void ThenTheMovieListLookLikeThis(string expectedMovies)
         {
             var actualMovies = JsonConvert.SerializeObject(_movieServices.GetAllMovies());
-            Console.WriteLine(actualMovies);
             Assert.AreEqual(actualMovies, expectedMovies);
         }
 
