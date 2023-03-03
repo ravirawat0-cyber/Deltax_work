@@ -10,13 +10,13 @@ namespace IMDB.Repository
 {
     public class ActorRepository : IActorRepository
     {
-        private List<Actor> _actorList = new List<Actor>()
-        {
-            new Actor(1, "Robert Downey Jr.", DateTime.Parse("03/15/1990")),
-            new Actor(2, "Chris Hemsworth", DateTime.Parse("08/11/1983")),
-            new Actor(3, "Will Smith", DateTime.Parse("09/25/1968")),
-            new Actor(4, "Henry Cavill", DateTime.Parse("05/05/1983"))
-        };
+        private List<Actor> _actorList = new List<Actor>();
+        // {
+        //     new Actor{Id = 1, Name = "Robert Downey Jr.", DateOfBirth = DateTime.Parse("03/15/1990")},
+        //     new Actor{Id = 2, Name = "Chris Hemsworth",DateOfBirth = DateTime.Parse("08/11/1983")},
+        //     new Actor{Id = 3,Name = "Will Smith",DateOfBirth = DateTime.Parse("09/25/1968")},
+        //     new Actor{Id = 4, Name = "Henry Cavill", DateOfBirth = DateTime.Parse("05/05/1983")}
+        // };
     
 
         public List<Actor> GetAll()

@@ -10,13 +10,13 @@ namespace IMDB.Repository
 {
     public class ProducerRepository : IProducerRepository
     {
-        private List<Producer> _producerList = new List<Producer>()
-        {
-            new Producer(1,"Kevin Feige", DateTime.Parse("06/02/1973")),
-            new Producer(2, "Taika waititi" ,DateTime.Parse("08/16/1975")),
-            new Producer(3, "Jhon salley", DateTime.Parse("05/16/1964")),
-            new Producer(4, "Richard Lester", DateTime.Parse("01/19/1932"))
-        };
+        private List<Producer> _producerList = new List<Producer>();
+        // {
+        //     new Producer{ Id = 1,Name = "Kevin Feige",DateOfBirth = DateTime.Parse("06/02/1973")},
+        //     new Producer{ Id = 2, Name = "Taika waititi", DateOfBirth = DateTime.Parse("08/16/1975") },
+        //     new Producer{ Id = 3, Name = "Jhon salley", DateOfBirth = DateTime.Parse("05/16/1964") },
+        //     new Producer{ Id = 4, Name = "Richard Lester", DateOfBirth = DateTime.Parse("01/19/1932") }
+        // };
         public List<Producer> GetAll()
         {
             return _producerList;

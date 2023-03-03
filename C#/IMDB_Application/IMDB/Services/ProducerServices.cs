@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,9 +33,13 @@ namespace IMDB.Services
         {
             if (string.IsNullOrEmpty(name)) throw new Exception("Actor name cannot be empty ");
             if (string.IsNullOrEmpty(dateOfBirth)) throw new Exception("Date of cannot be empty");
-         
+            var parameterDate = DateTime.ParseExact(dateOfBirth, "MM/dd/yyyy", CultureInfo.InvariantCulture);
+            if (parameterDate > DateTime.Today) throw new ArgumentNullException("Producer DOB cannot be  greater than current date");
+
             var producer = new Producer();
-            producer.Id = _producerRepository.GetAll().Max(a => a.Id) + 1;
+            var producerList = _producerRepository.GetAll();
+            producer.Id = producerList.Any() ? producerList.Max(a => a.Id) + 1 : 1;
+   
             producer.Name = name;
             producer.DateOfBirth = DateTime.Parse(dateOfBirth);
             _producerRepository.AddProducer(producer);

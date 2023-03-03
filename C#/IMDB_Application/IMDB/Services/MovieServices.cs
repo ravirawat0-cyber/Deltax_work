@@ -15,15 +15,15 @@ namespace IMDB.Services
 {
     public class MovieServices : IMovieServices
     {
-        private readonly IMovieRepository _movieRepository;
+        private readonly IMovieRepository _movieRepository = new MovieRepository();
         private readonly IActorServices _actorServices;
-        private readonly IProducerRepository _producerServices;
+        private readonly IProducerService _producerServices;
 
-        public MovieServices()
+
+        public MovieServices(IActorServices actorServices, IProducerService producerServices)
         {
-            _movieRepository = new MovieRepository();
-            _actorServices = new ActorServices();
-            _producerServices = new ProducerRepository();
+            _producerServices = producerServices;
+            _actorServices = actorServices;
         }
 
         public List<Movie> GetAllMovies()
@@ -60,7 +60,7 @@ namespace IMDB.Services
 
         public void DeleteMovieById(int id)
         {
-            if (_movieRepository.GetAll().Count < id || id <= 0) throw new Exception("Invalid Id");
+            if (_movieRepository.GetAll().Find(m => m.Id == id) == null) throw new Exception("Invalid Movie ID");
             _movieRepository.DeleteMovie(id);
         }
     }

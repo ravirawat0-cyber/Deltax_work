@@ -11,7 +11,11 @@ namespace IMDB.Test.StepDefinitions
     [Binding]
     public class StepDefinitions
     {
-        private MovieServices _movieServices = new MovieServices();
+      
+        static IActorServices _actorServices = new ActorServices(); 
+        static IProducerService _producerServices = new ProducerServices();
+        private MovieServices _movieServices = new MovieServices(_actorServices, _producerServices);
+
         private string name, yor, plot, actorIds, producerId;
         List<Movie> movieList = new List<Movie>();
         private Exception _exception;
@@ -19,11 +23,10 @@ namespace IMDB.Test.StepDefinitions
         [Given(@"The user select option (.*)")]
         public void GivenTheUserSelectOption(int p0)
         {
-            if (p0 == 1) Console.WriteLine("user selected add movie option");
+          
         }
-
-        [When(@"User request to add movie with following details:")]
-        public void WhenUserRequestToAddMovieWithFollowingDetails(Table table)
+        [When(@"User provide following details:")]
+        public void WhenUserProvideFollowingDetails(Table table)
         {
             name = table.Rows[0]["Name"];
             yor = table.Rows[0]["YearOfRelease"];
@@ -32,11 +35,20 @@ namespace IMDB.Test.StepDefinitions
             producerId = table.Rows[0]["ProducerId"];
         }
 
-        [Then(@"Movie add to the list")]
-        public void ThenMovieAddToTheList()
+        [Then(@"The Movie is added to the list")]
+        public void ThenTheMovieIsAddedToTheList()
         {
-            _movieServices.AddMovie(name, yor, plot, actorIds, producerId);
+            try
+            {
+                _movieServices.AddMovie(name, yor, plot, actorIds, producerId);
+            }
+            catch (Exception e)
+            {
+                _exception = e;
+            }
+    
         }
+
 
         [Then(@"The movie list look like this '([^']*)'")]
         public void ThenTheMovieListLookLikeThis(string expectedMovies)
@@ -46,130 +58,16 @@ namespace IMDB.Test.StepDefinitions
             Assert.AreEqual(actualMovies, expectedMovies);
         }
 
-        [BeforeScenario("ListMovie")]
-        public void AddSampleMovieForAdd()
-        {
-            _movieServices.AddMovie("IronMan", "2009", "Iron suit", "1", "1");
-        }
-
-        //List movie option 
-
-        [Given(@"the user selects option (.*)")]
-        public void GivenTheUserSelectsOption(int p0)
-        {
-            if(p0 == 2) Console.WriteLine("User selected list movie option");
-        }
-
         [Then(@"fetch all the movie details")]
         public void ThenFetchAllTheMovieDetails()
         {
             movieList = _movieServices.GetAllMovies();
         }
 
-        [Then(@"all movie detail look like this '([^']*)'")]
-        public void ThenAllMovieDetailLookLikeThis(string expectedMovies)
-        {
-            var actualMovies = JsonConvert.SerializeObject(movieList);
-            Assert.AreEqual(actualMovies, expectedMovies);
-        }
-
-
-        [BeforeScenario("DeleteMovie")]
-        public void AddSampleMovieAdd()
-        {
-            _movieServices.AddMovie("IronMan", "2009", "Iron suit", "1", "1");
-            _movieServices.AddMovie("Batman", "2005", "Dark knight rises" , "2,3", "1");
-        }
-
-        // delete movie valid case 
-
-        [Given(@"The user chose option (.*) from the available options")]
-        public void GivenTheUserChoseOptionFromTheAvailableOptions(int p0)
-        {
-            if (p0 == 5) Console.WriteLine("User selected delete movie option");
-        }
-
-        [Given(@"The list of movie name with id shown:")]
-        public void GivenTheListOfMovieNameWithIdShown(Table table)
-        {
-            foreach (var row in table.Rows)
-            {
-                Console.WriteLine(row["Id"] + " " + row["Name"]);
-            }
-        }
         [When(@"The user delete the movie through Id from the list (.*)")]
         public void WhenTheUserDeleteTheMovieThroughIdFromTheList(int id)
         {
            _movieServices.DeleteMovieById(id);
-        }
-
-        [Then(@"movie list look like '([^']*)'")]
-        public void ThenMovieListLookLike(string expectedMovies)
-        {
-            var actualMovies = JsonConvert.SerializeObject(_movieServices.GetAllMovies());
-            Assert.AreEqual(actualMovies, expectedMovies);
-        }
-
-
-        //-----add movie invalid case---
-        [Given(@"The user select options: (.*)")]
-        public void GivenTheUserSelectOptions(int p0)
-        {
-            if (p0 == 1) Console.WriteLine("user selected add movie option");
-        }
-        [When(@"User Request to add movie with following invalid details:")]
-        public void WhenUserRequestToAddMovieWithFollowingInvalidDetails(Table table)
-        {
-            name = table.Rows[0]["Name"];
-            yor = table.Rows[0]["YearOfRelease"];
-            plot = table.Rows[0]["Plot"];
-            actorIds = table.Rows[0]["ActorIds"];
-            producerId = table.Rows[0]["ProducerId"];
-
-        }
-
-        [Then(@"Movie with following detail add to the list")]
-        public void ThenMovieWithFollowingDetailAddToTheList()
-        {
-            try
-            {
-                _movieServices.AddMovie(name, yor, plot,actorIds, producerId);
-            }
-            catch (Exception e)
-            {
-                _exception = e;
-            }
-        }
-
-        [Then(@"The response message should be '([^']*)'")]
-        public void ThenTheResponseMessageShouldBe(string expectedResponse)
-        {
-            Console.WriteLine(_exception.Message);
-            Assert.AreEqual(expectedResponse, _exception.Message);
-        }
-
-     //   Delete movie invalid case
-
-         [BeforeScenario("InvalidCaseDeleteMovie")]
-         public void AddSamplesMovieAdd()
-         {
-             _movieServices.AddMovie("IronMan", "2009", "Iron suit", "1", "1");
-             _movieServices.AddMovie("Batman", "2005", "Dark knight rises", "2,3", "1");
-         }
-
-        [Given(@"The user choose option (.*) from the available options")]
-        public void GivenTheUserChooseOptionFromTheAvailableOptions(int p0)
-        {
-            if (p0 == 5) Console.WriteLine("User selected delete movie option");
-        }
-
-        [Given(@"the list of movie name with ID shown")]
-        public void GivenTheListOfMovieNameWithIDShown(Table table)
-        {
-            foreach (var row in table.Rows)
-            {
-                Console.WriteLine(row["Id"] + " " + row["Name"]);
-            }
         }
 
         [When(@"The user want to delete movie with id (.*)")]
@@ -185,10 +83,25 @@ namespace IMDB.Test.StepDefinitions
             }
         }
 
-        [Then(@"Then the response should be '([^']*)'")]
-        public void ThenThenTheResponseShouldBe(string expectedResponse)
+        [Then(@"The response message should be '([^']*)'")]
+        public void ThenTheResponseMessageShouldBe(string expectedResponse)
         {
-            Assert.AreEqual(_exception.Message, expectedResponse);
+            Assert.AreEqual(expectedResponse, _exception.Message);
         }
+
+        [BeforeScenario("AddMovie","ListMovie", "DeleteMovie" )]
+        public void AddSampleMovieForAdd()
+        {
+            _actorServices.AddActor("Robert Downey Jr." , "03/15/1990");
+            _actorServices.AddActor("Chris Hemsworth", "08/11/1983");
+            _producerServices.AddProducer("Kevin Feige", "06/02/1973");
+            _movieServices.AddMovie("IronMan", "2009", "Iron suit", "1", "1");
+            _movieServices.AddMovie("Batman", "2005", "Dark knight rises", "2", "1");
+            
+        }
+
+     
+
+
     }
 }

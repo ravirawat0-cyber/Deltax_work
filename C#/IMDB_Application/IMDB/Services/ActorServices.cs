@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,7 +32,11 @@ namespace IMDB.Services
         public void AddActor(string name, string dateOfBirth)
         {
             var actor = new Actor();
-            actor.Id = _actorRepository.GetAll().Max(a => a.Id) + 1;
+            if (string.IsNullOrEmpty(name)) throw new Exception("name cannot be null");
+            var parameterDate = DateTime.ParseExact(dateOfBirth, "MM/dd/yyyy", CultureInfo.InvariantCulture);
+            if (parameterDate > DateTime.Today) throw new ArgumentNullException("Actor DOB cannot be  greater than current date");
+
+            actor.Id = GetAllActors().Any() ? GetAllActors().Max(obj => obj.Id) + 1 : 1;
             actor.Name = name;
             actor.DateOfBirth = DateTime.Parse(dateOfBirth);
             _actorRepository.AddActor(actor);
