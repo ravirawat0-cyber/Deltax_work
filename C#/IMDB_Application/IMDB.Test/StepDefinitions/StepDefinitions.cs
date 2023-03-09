@@ -20,13 +20,8 @@ namespace IMDB.Test.StepDefinitions
         List<Movie> movieList = new List<Movie>();
         private Exception _exception;
 
-        [Given(@"The user select option (.*)")]
-        public void GivenTheUserSelectOption(int p0)
-        {
-          
-        }
-        [When(@"User provide following details:")]
-        public void WhenUserProvideFollowingDetails(Table table)
+        [Given(@"User provide following details:")]
+        public void GivenUserProvideFollowingDetails(Table table)
         {
             name = table.Rows[0]["Name"];
             yor = table.Rows[0]["YearOfRelease"];
@@ -35,8 +30,8 @@ namespace IMDB.Test.StepDefinitions
             producerId = table.Rows[0]["ProducerId"];
         }
 
-        [Then(@"The Movie is added to the list")]
-        public void ThenTheMovieIsAddedToTheList()
+        [When(@"The Movie is added to the list")]
+        public void WhenTheMovieIsAddedToTheList()
         {
             try
             {
@@ -46,9 +41,7 @@ namespace IMDB.Test.StepDefinitions
             {
                 _exception = e;
             }
-    
         }
-
 
         [Then(@"The movie list look like this '([^']*)'")]
         public void ThenTheMovieListLookLikeThis(string expectedMovies)
@@ -57,19 +50,13 @@ namespace IMDB.Test.StepDefinitions
             Assert.AreEqual(actualMovies, expectedMovies);
         }
 
-        [Then(@"fetch all the movie details")]
+        [Given(@"fetch all the movie details")]
         public void ThenFetchAllTheMovieDetails()
         {
             movieList = _movieServices.GetAllMovies();
         }
 
-        [When(@"The user delete the movie through Id from the list (.*)")]
-        public void WhenTheUserDeleteTheMovieThroughIdFromTheList(int id)
-        {
-           _movieServices.DeleteMovieById(id);
-        }
-
-        [When(@"The user want to delete movie with id (.*)")]
+        [Given(@"The user want to delete movie with id (.*)")]
         public void WhenTheUserWantToDeleteMovieWithId(int id)
         {
             try
@@ -98,9 +85,5 @@ namespace IMDB.Test.StepDefinitions
             _movieServices.AddMovie("Batman", "2005", "Dark knight rises", "2", "1");
             
         }
-
-     
-
-
     }
 }
