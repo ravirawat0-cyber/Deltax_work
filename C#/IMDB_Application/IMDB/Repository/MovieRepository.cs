@@ -10,7 +10,8 @@ namespace IMDB.Repository
 {
     public class MovieRepository : IMovieRepository
     {
-        private readonly List<Movie> _movieList;    
+        private readonly List<Movie> _movieList;
+
         public MovieRepository()
         {
             _movieList = new List<Movie>();
@@ -30,5 +31,6 @@ namespace IMDB.Repository
         {
             _movieList.RemoveAll(m => m.Id == id);
         }
+
     }
 }

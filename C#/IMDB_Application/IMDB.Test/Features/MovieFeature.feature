@@ -1,39 +1,47 @@
 ﻿Feature: 
 
+@AddMovies
+Scenario: Add a movie
+    When I request to add a movie with details: Name: '<Name>', YearOfRelease: '<YearOfRelease>', Plot '<Plot>', Actors: '<ActorIds>', Producer: '<ProducerId>'
+	Then the response message should be sent <responseMessage>
 
-@AddMovie
-Scenario: User adds a new movie
-	Given User provide following details:
-	| Name    | YearOfRelease | Plot       | ActorIds | ProducerId |
-	| IronMan | 2009          | Iron suit  | 1        | 1          |
-	When The Movie is added to the list
-	Then The movie list look like this '[{"Actors":[{"Id":1,"Name":"Robert Downey Jr.","DateOfBirth":"1990-03-15T00:00:00"}],"Id":1,"Name":"IronMan","YearOfRelease":2009,"Plot":"Iron suit","Producer":{"Id":1,"Name":"Kevin Feige","DateOfBirth":"1973-06-02T00:00:00"}},{"Actors":[{"Id":2,"Name":"Chris Hemsworth","DateOfBirth":"1983-08-11T00:00:00"}],"Id":2,"Name":"Batman","YearOfRelease":2005,"Plot":"Dark knight rises","Producer":{"Id":1,"Name":"Kevin Feige","DateOfBirth":"1973-06-02T00:00:00"}},{"Actors":[{"Id":1,"Name":"Robert Downey Jr.","DateOfBirth":"1990-03-15T00:00:00"}],"Id":3,"Name":"IronMan","YearOfRelease":2009,"Plot":"Iron suit","Producer":{"Id":1,"Name":"Kevin Feige","DateOfBirth":"1973-06-02T00:00:00"}}]'
-
-@ListMovie
-Scenario: User views a list of all movies
-	Given fetch all the movie details
-	Then  The movie list look like this '[{"Actors":[{"Id":1,"Name":"Robert Downey Jr.","DateOfBirth":"1990-03-15T00:00:00"}],"Id":1,"Name":"IronMan","YearOfRelease":2009,"Plot":"Iron suit","Producer":{"Id":1,"Name":"Kevin Feige","DateOfBirth":"1973-06-02T00:00:00"}},{"Actors":[{"Id":2,"Name":"Chris Hemsworth","DateOfBirth":"1983-08-11T00:00:00"}],"Id":2,"Name":"Batman","YearOfRelease":2005,"Plot":"Dark knight rises","Producer":{"Id":1,"Name":"Kevin Feige","DateOfBirth":"1973-06-02T00:00:00"}}]'
-
+	@ValidCase
+	Examples: 
+	| Name    | YearOfRelease | Plot       | ActorIds | ProducerId | responseMessage          |
+	| Iron Man | 2009          | Iron suit | 1,2      | 1          | Movie added successfully |
+	
+	@InvalidCase
+	Examples: 
+	| Name     | YearOfRelease | Plot      | ActorIds | ProducerId | responseMessage                               |
+	|          | 2009          | Iron suit | 1,2      | 1          | Name of movie cannot be empty.                |
+	| Iron Man | abc           | Iron suit | 1,2      | 1          | Year of release should be a positive integer. |
+	| Iron Man | 2009          |           | 1,2      | 1          | Plot of the movie cannot be empty.            |
+	| Iron Man | 2009          | Iron suit |          | 1          | Actor IDs cannot be empty.                    |
+	| Iron Man | 2009          | Iron suit | 1,2      |            | Producer ID cannot be empty.                  |
+	| Iron Man | 2009          | Iron suit | a        | 1          | Enter valid actors Id                         |
+	| Iron Man | 2009          | Iron suit | 1,2,3    | 1,2        | You can only choose 1 producer from the list. |
+				
+@ListMovies
+Scenario: List the details of all the movies
+	When the user requests to list the movies
+	Then the response data should be
+	| Id | Name     | YearOfRelease | Plot              | Actors                                                                                                                                          | Producer                                                           |
+	| 1  | Iron Man | 2009          | Iron suit         | [{"Id":1,"Name":"Robert Downey Jr.","DateOfBirth":"1990-03-15T00:00:00"},{"Id":2,"Name":"Chris Hemsworth","DateOfBirth":"1983-08-11T00:00:00"}] | {"Id":1,"Name":"Kevin Feige","DateOfBirth":"1973-06-02T00:00:00"}  |
+	| 2  | Batman   | 2005          | Dark knight rises | [{"Id":3,"Name":"Ryan Gosling","DateOfBirth":"1990-06-12T00:00:00"}]                                                                            | {"Id":2,"Name":"Mark Johnson","DateOfBirth":"2009-09-12T00:00:00"} |
 
 @DeleteMovie
 Scenario: User delete a movie
-	Given The user want to delete movie with id 1
-	Then The movie list look like this '[{"Actors":[{"Id":2,"Name":"Chris Hemsworth","DateOfBirth":"1983-08-11T00:00:00"}],"Id":2,"Name":"Batman","YearOfRelease":2005,"Plot":"Dark knight rises","Producer":{"Id":1,"Name":"Kevin Feige","DateOfBirth":"1973-06-02T00:00:00"}}]'
+	When The user want to delete movie with id: '<Id>'
+	Then the response message should be sent <responseMessage>
 
+	@ValidCase
+	Examples:
+	| Id | responseMessage            |
+	| 1  | Movie deleted successfully |
 
-@InvalidCaseAddMovie
-Scenario: User adds a new movie with invalid data
-	Given User provide following details:
-		| Name    | YearOfRelease | Plot       | ActorIds | ProducerId |
-	    |         | 2009          | Iron suit  | 1,2     |   1       |
-	When The Movie is added to the list
-	Then The response message should be 'Name of movie cannot be empty.'
-
-@InvalidCaseDeleteMovie
-Scenario: User want to delete a movie with invalid data
-	Given The user want to delete movie with id 3
-	Then The response message should be 'Invalid Movie ID'
-
-
-
+	@InvalidCase
+	Examples:
+	| Id | responseMessage   |
+	| 3  | Invalid Movie ID |
+	| 55 | Invalid Movie ID |
 

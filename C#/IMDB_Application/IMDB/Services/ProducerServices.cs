@@ -34,6 +34,7 @@ namespace IMDB.Services
             if (string.IsNullOrEmpty(name)) throw new Exception("Actor name cannot be empty ");
             if (string.IsNullOrEmpty(dateOfBirth)) throw new Exception("Date of cannot be empty");
             var parameterDate = DateTime.ParseExact(dateOfBirth, "MM/dd/yyyy", CultureInfo.InvariantCulture);
+            if (int.TryParse(name, out int valid)) throw new AggregateException("name should not contain integer value");
             if (parameterDate > DateTime.Today) throw new ArgumentNullException("Producer DOB cannot be  greater than current date");
 
             var producer = new Producer();

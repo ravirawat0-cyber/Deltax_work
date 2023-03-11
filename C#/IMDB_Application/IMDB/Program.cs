@@ -117,7 +117,6 @@ namespace IMDB
                             Console.WriteLine(e.Message);
                             break;
                         }
-                     
                         break;
 
                     case 2:
@@ -151,7 +150,7 @@ namespace IMDB
                                 Console.WriteLine("Enter the Actor Name (or type 'q' to exit): ");
                                 actorName = Console.ReadLine();
                                 if (actorName == "q") break;
-                                if (string.IsNullOrEmpty(actorName) || int.TryParse(actorName, out int valid)) throw new Exception("---Actor Name cannot be empty or number---");
+                                if (int.TryParse(actorName, out int valid) || string.IsNullOrEmpty(actorName)) throw new Exception("---Actor Name cannot be empty or number---");
 
                                 Console.WriteLine("Enter the Date of Birth (MM/dd/yyyy) (or type 'q' to exit): ");
                                 dobActor = Console.ReadLine();
@@ -177,7 +176,7 @@ namespace IMDB
                                 Console.WriteLine("Enter the Producer Name (or type 'q' to exit): ");
                                 producerName = Console.ReadLine();
                                 if (producerName == "q") break;
-                                if (string.IsNullOrEmpty(producerName) || int.TryParse(producerName, out int valid)) throw new Exception("---Producer Name cannot be empty or number---");
+                                if (int.TryParse(producerName, out int valid) || string.IsNullOrEmpty(producerName)) throw new Exception("---Producer Name cannot be empty or number---");
 
                                 Console.WriteLine("Enter the Date of Birth (MM/dd/yyyy) (or type 'q' to exit): ");
                                 dobProducer = Console.ReadLine();
@@ -188,7 +187,12 @@ namespace IMDB
                                 Console.WriteLine("Producer added successfully!");
                                 break;  //for multiple input just need to remove this break 
                             }
+                            catch (AggregateException e)
+                            {
+                                Console.WriteLine("interger name");
+                            }
                             catch (Exception e) { Console.WriteLine(e.Message); }
+                         
                         }
                         Console.WriteLine("--------------------------------------------");
                         break;
