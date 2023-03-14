@@ -8,14 +8,12 @@ USE IMDB;
 CREATE SCHEMA Foundation;
 
 --Use the schema to create the tables in the design created in Assignment 1.
-CREATE TABLE Foundation.Movies(
-  ID INT NOT NULL PRIMARY KEY,
-  Name VARCHAR(255) NOT NULL,
-  ReleaseYear INT NOT NULL,
-  Plot VARCHAR(255) NOT NULL,
-  Poster VARCHAR(255) NOT NULL,
-  ProducerID INT NOT NULL,
-  FOREIGN KEY (ProducerID) REFERENCES Foundation.Producers(ID)
+CREATE TABLE Foundation.Producers(
+   ID INT NOT NULL PRIMARY KEY,
+   Name VARCHAR(255) NOT NULL,
+   Sex VARCHAR(255) NOT NULL,
+   Dob DATE NOT NULL,
+   Bio VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE Foundation.Actors(
@@ -26,12 +24,14 @@ CREATE TABLE Foundation.Actors(
    Bio VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE Foundation.Producers(
-   ID INT NOT NULL PRIMARY KEY,
-   Name VARCHAR(255) NOT NULL,
-   Sex VARCHAR(255) NOT NULL,
-   Dob DATE NOT NULL,
-   Bio VARCHAR(255) NOT NULL
+CREATE TABLE Foundation.Movies(
+  ID INT NOT NULL PRIMARY KEY,
+  Name VARCHAR(255) NOT NULL,
+  ReleaseYear INT NOT NULL,
+  Plot VARCHAR(255) NOT NULL,
+  Poster VARCHAR(255) NOT NULL,
+  ProducerID INT NOT NULL,
+  FOREIGN KEY (ProducerID) REFERENCES Foundation.Producers(ID)
 );
 
 CREATE TABLE Foundation.ActorsMovies(
@@ -46,13 +46,14 @@ CREATE TABLE Foundation.ActorsMovies(
 --It should have a movie with more than 2 actors in it.
 --There must be two actors who have worked together in two movies or more.
 --There must be a producer who has produced more than 3 movies.
+
 INSERT INTO Foundation.Producers (ID, Name, Sex, Dob, Bio) 
 VALUES 
-(1, 'Kevin Feige', 'Male', CONVERT(DATE, '1973-12-06'), 'Kevin Feige is american producer'), 
-(2, 'Gwyneth Paltrow', 'Female', CONVERT(DATE, '1990-11-07'), 'American actress and businesswoman'), 
-(3, 'Samuel L. Jackson', 'Male', CONVERT(DATE, '1988-09-21'), 'Samuel Leroy Jackson is an American actor and producer'), 
-(4, 'Robert Downey Jr.', 'Male', CONVERT(DATE, '1998-12-02'), 'RDJ is an American actor and producer'), 
-(5, 'Jon Favreau', 'Male', CONVERT(DATE, '1978-12-01'), 'JKF is an American producer and filmmaker');
+(1, 'Kevin Feige', 'Male','1973-12-06', 'Kevin Feige is american producer'), 
+(2, 'Gwyneth Paltrow', 'Female', '1990-11-07', 'American actress and businesswoman'), 
+(3, 'Samuel L. Jackson', 'Male', '1988-09-21', 'Samuel Leroy Jackson is an American actor and producer'), 
+(4, 'Robert Downey Jr.', 'Male', '1998-12-02', 'RDJ is an American actor and producer'), 
+(5, 'Jon Favreau', 'Male', '1978-12-01', 'JKF is an American producer and filmmaker');
 
 INSERT INTO Foundation.Actors (ID, Name, Sex, Dob, Bio)
 VALUES
@@ -90,4 +91,3 @@ ADD CreatedAt DATE NOT NULL CONSTRAINT DF_CreatedAt DEFAULT GETDATE(),
 ALTER TABLE Foundation.Movies
 ADD Language VARCHAR(50) NOT NULL DEFAULT 'English',
     Profit INT NOT NULL DEFAULT 0;
-
