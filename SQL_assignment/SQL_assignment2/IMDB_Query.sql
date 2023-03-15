@@ -85,6 +85,23 @@ ALTER TABLE Foundation.Movies
 ADD CreatedAt DATE NOT NULL CONSTRAINT DF_CreatedAt DEFAULT GETDATE(),
     UpdatedAt DATE;
 
+
+-- Already add Primary key
+-- Here is how we can add primary key
+/*
+ALTER TABLE Foundation.Producers
+ADD CONSTRAINT PK_Producers PRIMARY KEY (ID);
+
+ALTER TABLE Foundation.Movies
+ADD CONSTRAINT PK_Movies PRIMARY KEY (ID);
+
+ALTER TABLE Foundation.Actors
+ADD CONSTRAINT PK_Actors PRIMARY KEY (ID);
+
+ALTER TABLE Foundation.Actors_Movies
+ADD CONSTRAINT PK_Actors_Movies PRIMARY KEY (ID);
+*/
+
 --ADD foreign keys as required.
 ALTER TABLE Foundation.Movies
 ADD CONSTRAINT FK_Movies_Producers FOREIGN KEY (ProducerID) REFERENCES Foundation.Producers(ID);
