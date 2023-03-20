@@ -1,24 +1,24 @@
 use IMDB;
 
 --1. Write a query to get the age of the Actors in Days(Number of days).
-SELECT id,
-		NAME,
-		sex,
-		dob,
-		bio,
-		Datediff(year, dob, Getdate()) AS AgeInDays
-FROM   foundation.actors; 
+SELECT  Id,
+		Name,
+		Sex,
+		Dob,
+		Bio,
+		DATEDIFF(DAY, Dob, Getdate()) AS AgeInDays
+FROM   Foundation.Actors; 
 
 --2. Write a query to get the list of Actors who have worked with a given producer X.
 SELECT a.*
-FROM   foundation.actors a
+FROM   Foundation.Actors a
        INNER JOIN foundation.actors_movies am
-               ON a.id = am.actorid
-       INNER JOIN foundation.movies m
-               ON m.id = am.movieid   
-       INNER JOIN foundation.producers p
-               ON p.id = m.producerid
-WHERE  p.NAME = 'Kevin Feige'; 
+               ON a.ID = am.ActorID
+       INNER JOIN Foundation.Movies m
+               ON m.ID = am.MovieID   
+       INNER JOIN Foundation.Producers p
+               ON p.ID = m.ProducerID
+WHERE  p.Name = 'Gwyneth Paltrow'; 
 
 --3. Write a query to get the list of actors who have acted together in two or more movies.
 SELECT A1.NAME,
@@ -67,15 +67,14 @@ FROM Foundation.Movies
 GROUP BY Language;
 
 --8. Write a query to get the total profit of movies which have actor X in each language.
-SELECT m.NAME,
-       Sum(profit)
-FROM   foundation.movies m
-       INNER JOIN foundation.actors_movies am
-               ON am.movieid = m.id
-       INNER JOIN foundation.actors a
-               ON a.id = am.actorid
-WHERE  a.NAME = 'Robert Downey Jr.'
-GROUP  BY m.NAME; 
+SELECT m.Language, m.Name, SUM(m.Profit) AS Total_profit
+FROM  Foundation.Movies m
+      INNER JOIN Foundation.Actors_Movies am
+        ON am.MovieID = m.ID
+ 	  INNER JOIN Foundation.Actors a
+        ON a.ID = am.ActorID
+WHERE a.Name = 'Robert Downey Jr.'
+GROUP BY m.Language, m.Name;
 
 
 --------------Stored Procedures------------
