@@ -49,26 +49,20 @@ namespace RESTApi_assignment2.Helper
 
         public List<int> GetValueFromActorsMoviesDict(int key)
         {
-            if (_actorsMovies.ContainsKey(key))
+            if (!_genresMovies.TryGetValue(key, out List<int> value))
             {
-                return _actorsMovies[key];
+                throw new KeyNotFoundException("key not found in ActorsMovies");
             }
-            else
-            {
-                return null;
-            }
+            return value;
         }
 
         public List<int> GetValueFromGenresMoviesDict(int key)
         {
-            if (_genresMovies.ContainsKey(key))
+            if (!_genresMovies.TryGetValue(key, out List<int> value))
             {
-                return _genresMovies[key];
+                throw new KeyNotFoundException("key not found in GenresMovies");
             }
-            else
-            {
-                return null;
-            }
+            return value;
         }
 
         public void DeleteRelatonHelpers(int key)
