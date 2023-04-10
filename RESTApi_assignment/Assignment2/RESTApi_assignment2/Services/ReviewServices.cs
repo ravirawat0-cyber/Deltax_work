@@ -79,7 +79,7 @@ namespace RESTApi_assignment2.Services
 
             if (reviews.Count == 0)
             {
-                throw new ArgumentException($"There are no reviews for movie with id {movieId}");
+                return new List<ReviewResponse>();
             }
             return _mapper.Map<List<ReviewResponse>>(reviews);
         }
@@ -96,7 +96,7 @@ namespace RESTApi_assignment2.Services
 
             if (review == null)
             {
-                throw new ArgumentException($"No review with id {id} found for movie with id {movieId}");
+                return null; 
             }
 
             return _mapper.Map<ReviewResponse>(review);

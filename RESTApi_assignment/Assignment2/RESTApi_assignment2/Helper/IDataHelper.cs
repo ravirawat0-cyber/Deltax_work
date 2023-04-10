@@ -10,6 +10,6 @@ namespace RESTApi_assignment2.Helper
         List<int> GetValueFromGenresMoviesDict(int key);
         void AddToMovieIdList(int id);
         bool IsMoviePresent(int id);
-        void DeleteRelatonHelpers(int key);
+        void DeleteMovieRelaton(int key);
     }
 }

@@ -45,7 +45,7 @@ namespace RESTApi_assignment2.Services
             var genrelist = _genreRepository.GetAll();
             if (genrelist == null)
             {
-                throw new ArgumentException($"There is no genres stored");
+               return new List<GenreResponse>();
             }
             return _mapper.Map<List<GenreResponse>>(genrelist);
         }
@@ -55,7 +55,7 @@ namespace RESTApi_assignment2.Services
             var genre = _genreRepository.GetById(id);
             if (genre == null)
             {
-                throw new ArgumentException($"Genre with ID {id} not found");
+                return null;
             }
             return _mapper.Map<GenreResponse>(genre);
         }

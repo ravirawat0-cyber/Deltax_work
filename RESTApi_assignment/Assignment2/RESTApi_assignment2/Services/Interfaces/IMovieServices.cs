@@ -12,8 +12,5 @@ namespace RESTApi_assignment2.Services.Interfaces
         int Create(MovieRequest request);
         int Update(int id, MovieRequest request);
         void Delete(int id);
-        
-
-
     }
 }

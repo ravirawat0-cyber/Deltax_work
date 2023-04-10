@@ -46,7 +46,7 @@ namespace RESTApi_assignment2.Services
             var actorlist = _actorRepository.GetAll();
             if (actorlist == null)
             {
-                throw new ArgumentException($"There is no actor stored");
+               return new List<ActorRespone>();
             }
             return _mapper.Map<List<ActorRespone>>(actorlist);
         }
@@ -56,7 +56,7 @@ namespace RESTApi_assignment2.Services
             var actor = _actorRepository.GetById(id);
             if (actor == null)
             {
-                throw new ArgumentException($"Actor with ID {id} not found");
+                return null;
             }
             var mapper =  _mapper.Map<ActorRespone>(actor);
             return mapper;

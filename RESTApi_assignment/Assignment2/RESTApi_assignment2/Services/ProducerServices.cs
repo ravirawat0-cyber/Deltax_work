@@ -47,7 +47,7 @@ namespace RESTApi_assignment2.Services
             var produerlist = _producerRepository.GetAll();
             if (produerlist == null)
             {
-                throw new ArgumentException($"There is no producer stored");
+                return new List<ProducerRespone>();
             }
             return _mapper.Map<List<ProducerRespone>>(produerlist);
         }
@@ -57,7 +57,7 @@ namespace RESTApi_assignment2.Services
             var producer = _producerRepository.GetById(id);
             if (producer == null)
             {
-                throw new ArgumentException($"Producer with ID {id} not found");
+                return null;
             }
             return _mapper.Map<ProducerRespone>(producer);
         }

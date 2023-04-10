@@ -59,7 +59,7 @@ namespace RESTApi_assignment2.Services
             {
                 throw new ArgumentException($"Movie with ID {id} not found");
             }
-            _dataHelper.DeleteRelatonHelpers(id);
+            _dataHelper.DeleteMovieRelaton(id);
             _movieRepository.Delete(id);
         }
         public List<MovieResponse> GetAll()
@@ -67,7 +67,7 @@ namespace RESTApi_assignment2.Services
             var movieList = _movieRepository.GetAll();
             if (movieList == null)
             {
-                throw new ArgumentException($"There is no movie stored");
+                return new List<MovieResponse>(); 
             }
 
             List<MovieResponse> movieResponseList = new List<MovieResponse>();
@@ -83,14 +83,7 @@ namespace RESTApi_assignment2.Services
                     Producer = _producerServices.GetById(movie.ProducerId),
                     CoverImageUrl = movie.CoverImageUrl
                 };
-                
-                List<int> actorIds = _dataHelper.GetValueFromActorsMoviesDict(movie.Id);
-                List<int> genreIds = _dataHelper.GetValueFromGenresMoviesDict(movie.Id);
-
-                movieResponse.Actors = new List<ActorRespone>();
-                movieResponse.Genres = new List<GenreResponse>();
-                movieResponse.Actors = actorIds.Select(actorId => _actorServices.GetById(actorId)).ToList();
-                movieResponse.Genres = genreIds.Select(genreId => _genreServices.GetById(genreId)).ToList();
+                PopulateActorsAndGenres(movie, movieResponse);
                 movieResponseList.Add(movieResponse);
             }
             return movieResponseList;
@@ -101,18 +94,12 @@ namespace RESTApi_assignment2.Services
             var movie = _movieRepository.GetById(id);
             if (movie == null) 
             {
-                throw new ArgumentException($"Movie with ID {id} not found");
+                return null;
             }
             var movieResponse = _mapper.Map<MovieResponse>(movie);
             movieResponse.Producer = _producerServices.GetById(movie.ProducerId);
 
-            List<int> actorIds = _dataHelper.GetValueFromActorsMoviesDict(movie.Id);
-            List<int> genreIds = _dataHelper.GetValueFromGenresMoviesDict(movie.Id);
-
-            movieResponse.Actors = new List<ActorRespone>();
-            movieResponse.Genres = new List<GenreResponse>();
-            movieResponse.Actors = actorIds.Select(actorId => _actorServices.GetById(actorId)).ToList();
-            movieResponse.Genres = genreIds.Select(genreId => _genreServices.GetById(genreId)).ToList();
+            PopulateActorsAndGenres(movie, movieResponse);
             return movieResponse;
         }
 
@@ -138,6 +125,17 @@ namespace RESTApi_assignment2.Services
             _dataHelper.AddToGenresMoviesDict(movie.Id, request.GenreIds);
             _movieRepository.Update(updatemovie);
             return movie.Id;
+        }
+
+        private void PopulateActorsAndGenres(Movie movie, MovieResponse movieResponse)
+        {
+            List<int> actorIds = _dataHelper.GetValueFromActorsMoviesDict(movie.Id);
+            List<int> genreIds = _dataHelper.GetValueFromGenresMoviesDict(movie.Id);
+
+            movieResponse.Actors = new List<ActorRespone>();
+            movieResponse.Genres = new List<GenreResponse>();
+            movieResponse.Actors = actorIds.Select(actorId => _actorServices.GetById(actorId)).ToList();
+            movieResponse.Genres = genreIds.Select(genreId => _genreServices.GetById(genreId)).ToList();
         }
 
         private void ValidateRequest(MovieRequest movie)

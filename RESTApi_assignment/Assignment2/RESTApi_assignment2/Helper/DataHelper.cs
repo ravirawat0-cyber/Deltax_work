@@ -65,7 +65,7 @@ namespace RESTApi_assignment2.Helper
             return value;
         }
 
-        public void DeleteRelatonHelpers(int key)
+        public void DeleteMovieRelaton(int key)
         {
             _actorsMovies.Remove(key);
             _genresMovies.Remove(key);
