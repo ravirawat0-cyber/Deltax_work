@@ -4,6 +4,7 @@ using RESTApi_assignment2.Models.Request;
 using RESTApi_assignment2.Services;
 using RESTApi_assignment2.Services.Interfaces;
 using System;
+using System.Collections.Generic;
 
 namespace RESTApi_assignment2.Controllers
 {
@@ -39,6 +40,10 @@ namespace RESTApi_assignment2.Controllers
                 var producer = _producerServices.GetById(id);
                 return Ok(producer);
             }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
@@ -67,7 +72,11 @@ namespace RESTApi_assignment2.Controllers
                 int updated = _producerServices.Update(id, request);
                 return Ok(updated);
             }
-            catch (ArgumentException ex)
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -81,9 +90,9 @@ namespace RESTApi_assignment2.Controllers
                 _producerServices.Delete(id);
                 return Ok();
             }
-            catch (ArgumentException ex)
+            catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
         }
     }

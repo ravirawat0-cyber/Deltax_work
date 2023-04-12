@@ -57,7 +57,7 @@ namespace RESTApi_assignment2.Services
 
             if (_movieRepository.GetById(id) == null)
             {
-                throw new ArgumentException($"Movie with ID {id} not found");
+                throw new KeyNotFoundException($"Movie with ID {id} not found");
             }
             _dataHelper.DeleteMovieRelaton(id);
             _movieRepository.Delete(id);
@@ -94,7 +94,7 @@ namespace RESTApi_assignment2.Services
             var movie = _movieRepository.GetById(id);
             if (movie == null) 
             {
-                return null;
+                throw new KeyNotFoundException($"Movie with ID {id} not found");
             }
             var movieResponse = _mapper.Map<MovieResponse>(movie);
             movieResponse.Producer = _producerServices.GetById(movie.ProducerId);
@@ -108,7 +108,7 @@ namespace RESTApi_assignment2.Services
             var movie = _movieRepository.GetById(id);
             if (movie == null)
             {
-                throw new ArgumentException($"Movie with ID {id} not found");
+                throw new KeyNotFoundException($"Movie with ID {id} not found");
             }
             ValidateRequest(request);
 
@@ -174,7 +174,7 @@ namespace RESTApi_assignment2.Services
             {
                 if (_actorServices.GetById(actorId) == null)
                 {
-                    throw new ArgumentException($"Invalid actor ID: {actorId}");
+                    throw new KeyNotFoundException($"Invalid actor ID: {actorId}");
                 }
             }
 
@@ -182,13 +182,13 @@ namespace RESTApi_assignment2.Services
             {
                 if (_genreServices.GetById(genreId) == null)
                 {
-                    throw new ArgumentException($"Invalid genre ID: {genreId}");
+                    throw new KeyNotFoundException($"Invalid genre ID: {genreId}");
                 }
             }
 
             if (_producerServices.GetById(movie.ProducerId) == null)
             {
-                throw new ArgumentException($"Invalid producer ID: {movie.ProducerId}");
+                throw new KeyNotFoundException($"Invalid producer ID: {movie.ProducerId}");
             }
         }
     }   

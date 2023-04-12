@@ -36,7 +36,7 @@ namespace RESTApi_assignment2.Services
         {
             if (_actorRepository.GetById(id) == null)
             {
-                throw new ArgumentException($"Actor with ID {id} not found");
+                throw new KeyNotFoundException($"Actor with ID {id} not found");
             }
             _actorRepository.Delete(id);
         }
@@ -56,9 +56,9 @@ namespace RESTApi_assignment2.Services
             var actor = _actorRepository.GetById(id);
             if (actor == null)
             {
-                return null;
+                throw new KeyNotFoundException($"Actor with ID {id} not found");
             }
-            var mapper =  _mapper.Map<ActorRespone>(actor);
+            var mapper =  _mapper.Map<ActorRespone>(actor);  
             return mapper;
         }
 
@@ -68,7 +68,7 @@ namespace RESTApi_assignment2.Services
 
             if (actor == null)
             {
-                throw new ArgumentException($"Actor with {id} not found");
+                throw new KeyNotFoundException($"Actor with {id} not found");
             }
             ValidateRequest(request);
 

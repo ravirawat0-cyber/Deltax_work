@@ -30,7 +30,7 @@ namespace RESTApi_assignment2.Services
         {
             if (!(_applicationData.IsMoviePresent(movieId)))
             {
-                throw new ArgumentException($"No movie present to review");
+                throw new KeyNotFoundException($"No movie present to review");
             }
             if (string.IsNullOrWhiteSpace(request.Message))
             {
@@ -52,7 +52,7 @@ namespace RESTApi_assignment2.Services
         {
             if (!_applicationData.IsMoviePresent(movieId))
             {
-                throw new ArgumentException($"No movie present to Delete");
+                throw new KeyNotFoundException($"No movie present to Delete");
             }
 
             var reviewToDelete = _reviewRepository.GetAll()
@@ -60,7 +60,7 @@ namespace RESTApi_assignment2.Services
 
             if (reviewToDelete == null)
             {
-                throw new ArgumentException($"No review found with ID {id} and Movie ID {movieId}");
+                throw new KeyNotFoundException($"No review found with ID {id} and Movie ID {movieId}");
             }
 
             _reviewRepository.Delete(reviewToDelete.Id);
@@ -70,7 +70,7 @@ namespace RESTApi_assignment2.Services
         {
             if (!_applicationData.IsMoviePresent(movieId))
             {
-                throw new ArgumentException($"Movie with id {movieId} does not exist");
+                throw new KeyNotFoundException($"Movie with id {movieId} does not exist");
             }
 
             var reviews = _reviewRepository.GetAll()
@@ -88,7 +88,7 @@ namespace RESTApi_assignment2.Services
         {
             if (!_applicationData.IsMoviePresent(movieId))
             {
-                throw new ArgumentException($"Movie with id {movieId} does not exist");
+                throw new KeyNotFoundException($"Movie with id {movieId} does not exist");
             }
 
             var review = _reviewRepository.GetAll()
@@ -96,7 +96,7 @@ namespace RESTApi_assignment2.Services
 
             if (review == null)
             {
-                return null; 
+                throw new KeyNotFoundException($"Review with given IDs not found"); 
             }
 
             return _mapper.Map<ReviewResponse>(review);
@@ -106,7 +106,7 @@ namespace RESTApi_assignment2.Services
         {
             if (!_applicationData.IsMoviePresent(movieId))
             {
-                throw new ArgumentException($"Movie with id {movieId} does not exist");
+                throw new KeyNotFoundException($"Movie with id {movieId} does not exist");
             }
 
             if (string.IsNullOrWhiteSpace(request.Message))
@@ -118,7 +118,7 @@ namespace RESTApi_assignment2.Services
                             .FirstOrDefault(r => r.MovieId == movieId && r.Id == id);
             if (review == null)
             {
-                throw new ArgumentException($"No review with id {id} found for movie with id {movieId}");
+                throw new KeyNotFoundException($"No review with id {id} found for movie with id {movieId}");
             }
 
             review.Message = request.Message;

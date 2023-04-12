@@ -37,7 +37,7 @@ namespace RESTApi_assignment2.Services
         {
             if (_producerRepository.GetById(id) == null)
             {
-                throw new ArgumentException($"producer with ID {id} not found");
+                throw new KeyNotFoundException($"producer with ID {id} not found");
             }
             _producerRepository.Delete(id);
         }
@@ -57,7 +57,7 @@ namespace RESTApi_assignment2.Services
             var producer = _producerRepository.GetById(id);
             if (producer == null)
             {
-                return null;
+                throw new KeyNotFoundException($"Producer with ID {id} not found");
             }
             return _mapper.Map<ProducerRespone>(producer);
         }
@@ -67,7 +67,7 @@ namespace RESTApi_assignment2.Services
             var producer = _producerRepository.GetById(id);
             if (producer == null)
             {
-                throw new ArgumentException($"Producer with ID {id} not found");
+                throw new KeyNotFoundException($"Producer with ID {id} not found");
             }
             ValidateReqeust(request);
             producer.Name = request.Name;

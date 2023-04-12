@@ -35,7 +35,7 @@ namespace RESTApi_assignment2.Services
         {
             if (_genreRepository.GetById(id) == null)
             {
-                throw new ArgumentException($"Genre with ID {id} not found");
+                throw new KeyNotFoundException($"Genre with ID {id} not found");
             }
             _genreRepository.Delete(id);
         }
@@ -55,7 +55,7 @@ namespace RESTApi_assignment2.Services
             var genre = _genreRepository.GetById(id);
             if (genre == null)
             {
-                return null;
+                throw new KeyNotFoundException($"Genre with ID {id} not found");
             }
             return _mapper.Map<GenreResponse>(genre);
         }
@@ -65,7 +65,7 @@ namespace RESTApi_assignment2.Services
             var genre = _genreRepository.GetById(id);
             if (genre == null)
             {
-                throw new ArgumentException($"Genre with {id} not found");
+                throw new KeyNotFoundException($"Genre with {id} not found");
             }
             ValidateRequest(request);
             genre.Name = request.Name;

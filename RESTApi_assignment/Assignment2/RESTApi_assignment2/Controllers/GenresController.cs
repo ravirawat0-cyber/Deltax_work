@@ -4,6 +4,7 @@ using RESTApi_assignment2.Models.Request;
 using RESTApi_assignment2.Services;
 using RESTApi_assignment2.Services.Interfaces;
 using System;
+using System.Collections.Generic;
 
 namespace RESTApi_assignment2.Controllers
 {
@@ -40,6 +41,10 @@ namespace RESTApi_assignment2.Controllers
                 var genre = _genreServices.GetById(id);
                 return Ok(genre);
             }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
@@ -68,7 +73,11 @@ namespace RESTApi_assignment2.Controllers
                 int updated = _genreServices.Update(id, request);
                 return Ok(updated);
             }
-            catch (ArgumentException ex)
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -82,9 +91,9 @@ namespace RESTApi_assignment2.Controllers
                 _genreServices.Delete(id);
                 return Ok();
             }
-            catch (ArgumentException ex)
+            catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
         }
     }

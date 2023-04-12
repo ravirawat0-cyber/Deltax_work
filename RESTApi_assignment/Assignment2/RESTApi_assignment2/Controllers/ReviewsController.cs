@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using RESTApi_assignment2.Models.Request;
 using RESTApi_assignment2.Services.Interfaces;
 using System;
+using System.Collections.Generic;
 
 namespace RESTApi_assignment2.Controllers
 {
@@ -24,6 +25,10 @@ namespace RESTApi_assignment2.Controllers
                 var review = _reviewServices.GetAll(movieId);
                 return Ok(review);
             }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
@@ -37,6 +42,10 @@ namespace RESTApi_assignment2.Controllers
             {
                 var review = _reviewServices.GetById(movieId, id);
                 return Ok(review);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
             }
             catch (Exception ex)
             {
@@ -55,6 +64,10 @@ namespace RESTApi_assignment2.Controllers
                 return CreatedAtAction(nameof(GetById), new { movieId = movieId, id = id }, review);
          
             }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
@@ -69,7 +82,11 @@ namespace RESTApi_assignment2.Controllers
                 int updated = _reviewServices.Update(movieId, id, request);
                 return Ok(updated);
             }
-            catch (ArgumentException ex)
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -84,7 +101,11 @@ namespace RESTApi_assignment2.Controllers
                 _reviewServices.Delete(movieId, id);
                 return Ok();
             }
-            catch (ArgumentException ex)
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }

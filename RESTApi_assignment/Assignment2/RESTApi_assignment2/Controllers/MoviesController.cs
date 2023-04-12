@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using RESTApi_assignment2.Models.Request;
 using RESTApi_assignment2.Services.Interfaces;
 using System;
+using System.Collections.Generic;
 
 namespace RESTApi_assignment2.Controllers
 {
@@ -39,12 +40,15 @@ namespace RESTApi_assignment2.Controllers
                 var movie = _movieServices.GetById(id);
                 return Ok(movie);
             }
-            catch (ArgumentException ex)
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
       
-         
         }
 
         [HttpPost]
@@ -55,7 +59,11 @@ namespace RESTApi_assignment2.Controllers
                 int id = _movieServices.Create(request);
                 return CreatedAtAction(nameof(GetById), new { id = id }, request);
             }
-            catch(ArgumentException ex)
+            catch(KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch(Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -69,7 +77,11 @@ namespace RESTApi_assignment2.Controllers
                 int updated = _movieServices.Update(id, request);
                 return Ok(updated);
             }
-            catch (ArgumentException ex)
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -83,9 +95,9 @@ namespace RESTApi_assignment2.Controllers
                 _movieServices.Delete(id);
                 return Ok();
             }
-            catch (ArgumentException ex)
+            catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
         }
     }
