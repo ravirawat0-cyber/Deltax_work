@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using RESTApi_assignment2.Models.DbModels;
 using RESTApi_assignment2.Models.Request;
 using RESTApi_assignment2.Services;
 using RESTApi_assignment2.Services.Interfaces;
@@ -24,11 +25,11 @@ namespace RESTApi_assignment2.Controllers
             try
             {
                 var producer = _producerServices.GetAll();
-                return Ok(producer);
+                return producer.Count == 0 ? NoContent() : Ok(producer);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(500, "Internal Server Error");
             }
         }
 
@@ -44,9 +45,9 @@ namespace RESTApi_assignment2.Controllers
             {
                 return NotFound(ex.Message);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(500, "Internal Server Error");
             }
         }
 
@@ -58,9 +59,13 @@ namespace RESTApi_assignment2.Controllers
                 int id = _producerServices.Create(request);
                 return CreatedAtAction(nameof(GetById), new { id = id }, request);
             }
-            catch (Exception ex)
+            catch (ArgumentException ex)
             {
                 return BadRequest(ex.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error");
             }
         }
 
@@ -72,13 +77,13 @@ namespace RESTApi_assignment2.Controllers
                 int updated = _producerServices.Update(id, request);
                 return Ok(updated);
             }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (Exception ex)
+            catch (ArgumentException ex)
             {
                 return BadRequest(ex.Message);
+            }
+            catch (Exception) 
+            { 
+                return StatusCode(500, "Internal Server Error");
             }
         }
 
@@ -90,9 +95,13 @@ namespace RESTApi_assignment2.Controllers
                 _producerServices.Delete(id);
                 return Ok();
             }
-            catch (Exception ex)
+            catch (KeyNotFoundException ex)
             {
                 return NotFound(ex.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error");
             }
         }
     }

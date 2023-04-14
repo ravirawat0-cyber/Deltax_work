@@ -23,11 +23,11 @@ namespace RESTApi_assignment2.Controllers
             try
             {
                 var movie = _movieServices.GetAll();
-                return Ok(movie);
+                return movie.Count  == 0 ? NoContent() : Ok(movie);  
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(500, "Internal Server Error");
             }
             
         }
@@ -44,9 +44,9 @@ namespace RESTApi_assignment2.Controllers
             {
                 return NotFound(ex.Message);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(500, "Internal Server Error");
             }
       
         }
@@ -63,9 +63,13 @@ namespace RESTApi_assignment2.Controllers
             {
                 return NotFound(ex.Message);
             }
-            catch(Exception ex)
+            catch (ArgumentException ex)
             {
                 return BadRequest(ex.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error");
             }
         }
 
@@ -81,9 +85,13 @@ namespace RESTApi_assignment2.Controllers
             {
                 return NotFound(ex.Message);
             }
-            catch (Exception ex)
+            catch (ArgumentException ex)
             {
                 return BadRequest(ex.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error");
             }
         }
 
@@ -95,9 +103,13 @@ namespace RESTApi_assignment2.Controllers
                 _movieServices.Delete(id);
                 return Ok();
             }
-            catch (Exception ex)
+            catch (KeyNotFoundException ex)
             {
                 return NotFound(ex.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error");
             }
         }
     }

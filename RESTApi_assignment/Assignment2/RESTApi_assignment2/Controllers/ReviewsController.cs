@@ -23,15 +23,15 @@ namespace RESTApi_assignment2.Controllers
             try
             {
                 var review = _reviewServices.GetAll(movieId);
-                return Ok(review);
+                return review.Count == 0 ? NoContent() : Ok(review);
             }
             catch (KeyNotFoundException ex)
             {
                 return NotFound(ex.Message);
             }
-            catch (Exception ex)
+            catch (Exception) 
             {
-                return BadRequest(ex.Message);
+                return StatusCode(500, "Internal Server Error");
             }
         }
 
@@ -47,9 +47,9 @@ namespace RESTApi_assignment2.Controllers
             {
                 return NotFound(ex.Message);
             }
-            catch (Exception ex)
+            catch (Exception) 
             {
-                return BadRequest(ex.Message);
+                return StatusCode(500, "Internal Server Error");
             }
 
         }
@@ -68,9 +68,13 @@ namespace RESTApi_assignment2.Controllers
             {
                 return NotFound(ex.Message);
             }
-            catch (Exception ex)
+            catch (ArgumentException ex)
             {
                 return BadRequest(ex.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error");
             }
         }
 
@@ -86,9 +90,13 @@ namespace RESTApi_assignment2.Controllers
             {
                 return NotFound(ex.Message);
             }
-            catch (Exception ex)
+            catch (ArgumentException ex)
             {
                 return BadRequest(ex.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error");
             }
 
         }
@@ -105,9 +113,9 @@ namespace RESTApi_assignment2.Controllers
             {
                 return NotFound(ex.Message);
             }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
+            catch (Exception) 
+            { 
+                return StatusCode(500, "Internal Server Error");
             }
         }
     }

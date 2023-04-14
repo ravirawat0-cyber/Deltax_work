@@ -23,14 +23,14 @@ namespace RESTApi_assignment2.Controllers
         {
             try
             {
-                var genre = _genreServices.GetAll();
-                return Ok(genre);
+                var genres = _genreServices.GetAll();
+                return genres.Count == 0 ? NoContent() : Ok(genres);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(500, "Internal Server Error");
+
             }
-          
         }
 
         [HttpGet("{id:int}")]
@@ -45,9 +45,9 @@ namespace RESTApi_assignment2.Controllers
             {
                 return NotFound(ex.Message);
             }
-            catch (Exception ex)
+            catch(Exception)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(500, "Internal Server Error");
             }
         }
 
@@ -59,9 +59,13 @@ namespace RESTApi_assignment2.Controllers
                 int id = _genreServices.Create(request);
                 return CreatedAtAction(nameof(GetById), new { id = id }, request);
             }
-            catch (Exception ex)
+            catch (ArgumentException ex)
             {
                 return BadRequest(ex.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error");
             }
         }
 
@@ -77,9 +81,13 @@ namespace RESTApi_assignment2.Controllers
             {
                 return NotFound(ex.Message);
             }
-            catch (Exception ex)
+            catch (ArgumentException ex)
             {
                 return BadRequest(ex.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error");
             }
         }
 
@@ -91,9 +99,13 @@ namespace RESTApi_assignment2.Controllers
                 _genreServices.Delete(id);
                 return Ok();
             }
-            catch (Exception ex)
+            catch (KeyNotFoundException ex) 
             {
                 return NotFound(ex.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error");
             }
         }
     }

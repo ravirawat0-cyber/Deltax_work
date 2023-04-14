@@ -4,6 +4,11 @@ using RESTApi_assignment2.Models.Request;
 using RESTApi_assignment2.Services.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Net;
+using RESTApi_assignment2.Services;
+using System.Reflection.Metadata;
+using System.IO;
 
 namespace RESTApi_assignment2.Controllers
 {
@@ -23,12 +28,13 @@ namespace RESTApi_assignment2.Controllers
             try
             {
                 var actor = _actorServices.GetAll();
-                return Ok(actor);
+                return actor.Count == 0 ? NoContent() : Ok(actor);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return BadRequest(ex.Message);
-            }   
+                return StatusCode(500, "Internal Server Error");
+
+            }
         }
 
         [HttpGet("{id:int}")]
@@ -41,15 +47,14 @@ namespace RESTApi_assignment2.Controllers
             }
             catch (KeyNotFoundException ex)
             {
-                return NotFound(ex.Message);
+               return NotFound(ex.Message);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(500, "Internal Server Error");
             }
-           
         }
-
+        
         [HttpPost]
         public IActionResult Create([FromBody] ActorRequest request)
         {
@@ -58,9 +63,13 @@ namespace RESTApi_assignment2.Controllers
                 int id  = _actorServices.Create(request);
                 return CreatedAtAction(nameof(GetById), new {id = id}, request);
             }
-            catch(Exception ex)
+            catch(ArgumentException ex)
             {
                 return BadRequest(ex.Message);
+            }
+            catch(Exception) 
+            {
+                return StatusCode(500, "Internal Server Error");
             }
         }
 
@@ -76,10 +85,14 @@ namespace RESTApi_assignment2.Controllers
             {
                 return NotFound(ex.Message);
             }
-            catch (Exception ex)
+            catch (ArgumentException ex)
             {
                 return BadRequest(ex.Message);  
-            }     
+            }  
+            catch(Exception)
+            {
+                return StatusCode(500, "Internal Server Error");
+            }
         }
 
         [HttpDelete("{id:int}")]
@@ -90,10 +103,14 @@ namespace RESTApi_assignment2.Controllers
                 _actorServices.Delete(id);
                 return Ok();
             }
-            catch (Exception ex)
+            catch (KeyNotFoundException ex)
             {
                 return NotFound(ex.Message);
             }  
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error");
+            }
         }
     }
 }
