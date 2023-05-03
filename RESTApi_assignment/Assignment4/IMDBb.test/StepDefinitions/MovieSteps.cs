@@ -35,6 +35,20 @@ namespace IMDB.test.StepDefinitions
         [BeforeScenario]
         public static void Mocks()
         {
+            SetupProducers();
+            SetupActors();
+            SetupActorMovies();
+            SetupGenres();
+            SetupGenreMovies();
+            SetupMovies();
+            MovieMock.MockProducerRepo();
+            MovieMock.MockActorRepo();
+            MovieMock.MockDataHelper();
+            MovieMock.MockGenreRepo();
+            MovieMock.MockMovieRepo();
+        }
+        private static void SetupProducers()
+        {
             MovieMock.ListOfProducers = new List<Producer>
             {
                 new Producer
@@ -54,7 +68,10 @@ namespace IMDB.test.StepDefinitions
                     DOB = DateTime.Parse("1990-12-12")
                 }
             };
-    
+        }
+
+        private static void SetupActors()
+        {
             MovieMock.ListOfActors = new List<Actor>
             {
                 new Actor
@@ -74,18 +91,19 @@ namespace IMDB.test.StepDefinitions
                     DOB = DateTime.Parse("1990-12-12")
                 }
             };
-        
+        }
+
+        private static void SetupActorMovies()
+        {
             MovieMock.ActorsMovies = new Dictionary<int, List<string>>
             {
                 {1, new List<string>{"1", "2"}},
                 {2, new List<string>{"2", "1"}},
             };
-            MovieMock.GenresMovies = new Dictionary<int, List<string>>
-            {
-                {1, new List<string>{"1", "2"}},
-                {2, new List<string>{"2", "1"}},
-            };
-       
+        }
+
+        private static void SetupGenres()
+        {
             MovieMock.ListOfGenres = new List<Genre>
             {
                 new Genre
@@ -99,9 +117,21 @@ namespace IMDB.test.StepDefinitions
                     Name = "Mock Action"
                 }
             };
-    
+        }
+
+        private static void SetupGenreMovies()
+        {
+            MovieMock.GenresMovies = new Dictionary<int, List<string>>
+            {
+                {1, new List<string>{"1", "2"}},
+                {2, new List<string>{"2", "1"}},
+            };
+        }
+
+        private static void SetupMovies()
+        {
             MovieMock.ListOfMovies = new List<Movie>
-            { 
+            {
                 new Movie
                 {
                     Id = 1,
@@ -121,12 +151,6 @@ namespace IMDB.test.StepDefinitions
                     CoverImageUrl = "firebase URL"
                 }
             };
-            MovieMock.MockProducerRepo();
-            MovieMock.MockActorRepo();
-            MovieMock.MockDataHelper();
-            MovieMock.MockGenreRepo();
-            MovieMock.MockMovieRepo();
         }
     }
-
 }

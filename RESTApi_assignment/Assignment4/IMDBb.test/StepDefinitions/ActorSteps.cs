@@ -18,7 +18,6 @@ namespace IMDB.test.StepDefinitions
             {
                 builder.ConfigureServices(services =>
                 {
-                    // Mock Repo
                     services.AddScoped(_ => ActorMock.ActorRepoMock.Object);
                 });
             }))
@@ -28,13 +27,18 @@ namespace IMDB.test.StepDefinitions
         [BeforeScenario]
         public static void Mocks()
         {
+            SetupActors();
+            ActorMock.MockActorRepo();
+        }
+        private static void SetupActors()
+        {
             ActorMock.ListOfActors = new List<Actor>
             {
                 new Actor
                 {
                     Id = 1,
                     Name = "Mock Actor",
-                    Bio = "Tom bio",
+                    Bio = "Mock bio",
                     Sex = "M",
                     DOB = DateTime.Parse("1990-12-12")
                 },
@@ -42,12 +46,11 @@ namespace IMDB.test.StepDefinitions
                 {
                     Id = 2,
                     Name = "Mock Actor",
-                    Bio = "Robert bio",
-                    Sex = "M",
+                    Bio = "Mock bio",
+                    Sex = "F",
                     DOB = DateTime.Parse("1990-12-12")
                 }
             };
-            ActorMock.MockActorRepo();
         }
     }
 }

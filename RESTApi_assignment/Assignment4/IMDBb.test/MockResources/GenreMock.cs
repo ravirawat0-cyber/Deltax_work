@@ -33,19 +33,13 @@ namespace IMDB.test.MockResources
             GenreRepoMock.Setup(x => x.Delete(It.IsAny<int>())).Callback((int id) =>
             {
                 var genreToRemove = ListOfGenres.FirstOrDefault(x => x.Id == id);
-                if (genreToRemove != null)
-                {
-                    ListOfGenres.Remove(genreToRemove);
-                }
+                ListOfGenres.Remove(genreToRemove);
             });
 
             GenreRepoMock.Setup(x => x.Update(It.IsAny<int>(), It.IsAny<Genre>())).Callback((int id, Genre genre) =>
             {
                 var genreToUpdate = ListOfGenres.FirstOrDefault(x => x.Id == id);
-                if (genreToUpdate != null)
-                {
-                    genreToUpdate.Name = genre.Name;
-                }
+                genreToUpdate.Name = genre.Name;
             });
         }
     }

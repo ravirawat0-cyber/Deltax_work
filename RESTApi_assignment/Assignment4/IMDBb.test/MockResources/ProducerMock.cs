@@ -35,22 +35,16 @@ namespace IMDB.test.MockResources
             ProducerRepoMock.Setup(x => x.Delete(It.IsAny<int>())).Callback((int id) =>
             {
                 var producerToRemove = ListOfProducers.FirstOrDefault(x => x.Id == id);
-                if (producerToRemove != null)
-                {
-                    ListOfProducers.Remove(producerToRemove);
-                }
+                ListOfProducers.Remove(producerToRemove);
             });
 
             ProducerRepoMock.Setup(x => x.Update(It.IsAny<int>(), It.IsAny<Producer>())).Callback((int id, Producer producer) =>
             {
                 var producerToUpdate = ListOfProducers.FirstOrDefault(x => x.Id == id);
-                if (producerToUpdate != null)
-                {
-                    producerToUpdate.Name = producer.Name;
-                    producerToUpdate.Bio = producer.Bio;
-                    producerToUpdate.Sex = producer.Sex;
-                    producerToUpdate.DOB = producer.DOB;
-                }
+                producerToUpdate.Name = producer.Name;
+                producerToUpdate.Bio = producer.Bio;
+                producerToUpdate.Sex = producer.Sex;
+                producerToUpdate.DOB = producer.DOB;
             });
         }
     }

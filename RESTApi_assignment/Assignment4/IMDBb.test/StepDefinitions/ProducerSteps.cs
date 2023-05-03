@@ -27,6 +27,11 @@ namespace IMDB.test.StepDefinitions
         [BeforeScenario]
         public static void Mocks()
         {
+            SetupProducers();
+            ProducerMock.MockProducerRepo();
+        }
+        private static void SetupProducers()
+        {
             ProducerMock.ListOfProducers = new List<Producer>
             {
                 new Producer
@@ -46,7 +51,6 @@ namespace IMDB.test.StepDefinitions
                     DOB = DateTime.Parse("1990-12-12")
                 }
             };
-            ProducerMock.MockProducerRepo();
         }
     }
 }

@@ -7,8 +7,8 @@ Scenario: Get Actor All
 	And response data must look like '<ResponseData>'
 	Examples: 
 	| URL        | ResponseCode | ResponseData                                                                                                                                                               |
-	| api/actors | 200          | [{"id":1,"name":"Mock Actor","bio":"Tom bio","dob":"1990-12-12T00:00:00","sex":"M"},{"id":2,"name":"Mock Actor","bio":"Robert bio","dob":"1990-12-12T00:00:00","sex":"M"}] |
-	| api/actors | 200          |                                                                                                                                                                            |
+	| api/actors | 200          | [{"id":1,"name":"Mock Actor","bio":"Mock bio","dob":"1990-12-12T00:00:00","sex":"M"},{"id":2,"name":"Mock Actor","bio":"Mock bio","dob":"1990-12-12T00:00:00","sex":"F"}] |
+	
 
 Scenario: Get Actor by ID
 	Given I am a client
@@ -18,13 +18,16 @@ Scenario: Get Actor by ID
 
 	@ValidCase
 	Examples:
-	| URL          | ResponseCode | ResponseData                                                                       |
-	| api/actors/1 | 200          | {"id":1,"name":"Mock Actor","bio":"Tom bio","dob":"1990-12-12T00:00:00","sex":"M"} |
+	| URL          | ResponseCode | ResponseData                                                                        |
+	| api/actors/1 | 200          | {"id":1,"name":"Mock Actor","bio":"Mock bio","dob":"1990-12-12T00:00:00","sex":"M"} |
+	| api/actors/2 | 200          | {"id":2,"name":"Mock Actor","bio":"Mock bio","dob":"1990-12-12T00:00:00","sex":"F"} |
 	
 	@InvalidCase
 	Examples:
 	| URL           | ResponseCode | ResponseData               |
 	| api/actors/20 | 404          | Actor with ID 20 not found |
+	| api/actors/6  | 404          | Actor with ID 6 not found  |
+
 
 Scenario: Create actor
 	Given I am a client
@@ -34,8 +37,9 @@ Scenario: Create actor
 
 	@ValidCase
 	Examples:
-	| URL        | RequestData                                                                | ResponseCode | ResponseData |
-	| api/actors | {"Name": "Tom Holland", "Bio": "Tom bio", "DOB": "1990-12-12", "Sex": "F"} | 200          | 3            |
+	| URL        | RequestData                                                                    | ResponseCode | ResponseData |
+	| api/actors | {"Name": "Tom Holland", "Bio": "Tom bio", "DOB": "1990-12-12", "Sex": "F"}     | 200          | 3            |
+	| api/actors | {"Name": "Chris Evans", "Bio": "Chris bio", "DOB": "1990-12-12", "Sex": "F"} | 200          | 3            |
 
 	@InvalidCase
 	Examples:
@@ -53,8 +57,9 @@ Scenario: Update actor
 
 	@ValidCase
 	Examples:
-	| URL          | RequestData                                                                              | ResponseCode | ResponseData |
-	| api/actors/1 | {"Name": "Tom Holland", "Bio": "Tom is hollywood star", "DOB": "1990-12-12", "Sex": "M"} | 200          |              |
+	| URL          | RequestData                                                                                | ResponseCode | ResponseData |
+	| api/actors/1 | {"Name": "Tom Holland", "Bio": "Tom is hollywood star", "DOB": "1990-12-12", "Sex": "M"}   | 200          |              |
+	| api/actors/2 | {"Name": "Chris Evans", "Bio": "Chris is hollywood star", "DOB": "1999-11-12", "Sex": "M"} | 200          |              |
 
 	@InvalidCase
 	Examples:
@@ -75,6 +80,7 @@ Scenario: Delete actor
 	Examples:
 	| URL          | ResponseCode | ResponseData |
 	| api/actors/1 | 200          |              |
+	| api/actors/2 | 200          |              |
 
 	@InValidCase
 	Examples:

@@ -35,8 +35,7 @@ namespace IMDB.test.MockResources
             ActorRepoMock.Setup(x => x.Delete(It.IsAny<int>())).Callback((int id) =>
             {
                 var actorToRemove = ListOfActors.FirstOrDefault(x => x.Id == id);
-                ListOfActors.Remove(actorToRemove);
-               
+                ListOfActors.Remove(actorToRemove);   
             });
 
             ActorRepoMock.Setup(x => x.Update(It.IsAny<int>(), It.IsAny<Actor>())).Callback((int id, Actor actor) =>

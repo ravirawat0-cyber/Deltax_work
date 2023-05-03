@@ -73,20 +73,12 @@ namespace IMDB.test.MockResources
         {
             DataHelperMock.Setup(x => x.GetActorIdsFromActorMovieTable(It.IsAny<int>())).Returns((int movieId) =>
             {
-                if(ActorsMovies.ContainsKey(movieId))
-                {
-                    return ActorsMovies[movieId];
-                }
-                return new List<string>();
+                return ActorsMovies[movieId];
             });
 
             DataHelperMock.Setup(x => x.GetGenreIdsFromGenreMovieTable(It.IsAny<int>())).Returns((int movieId) =>
             {
-                if(GenresMovies.ContainsKey(movieId))
-                {
-                    return GenresMovies[movieId];
-                }
-                return new List<string>();
+                return GenresMovies[movieId];
             });
 
             DataHelperMock.Setup(x => x.DeleteFromActorMovieTable(It.IsAny<int>())).Callback((int movieId) =>
@@ -98,10 +90,7 @@ namespace IMDB.test.MockResources
             });
             DataHelperMock.Setup(x => x.DeleteFromGenreMovieTable(It.IsAny<int>())).Callback((int movieId) =>
             {
-                if(GenresMovies.ContainsKey(movieId))
-                {
-                    GenresMovies.Remove(movieId);
-                }
+                GenresMovies.Remove(movieId);   
             });
         }
         public static void MockMovieRepo()

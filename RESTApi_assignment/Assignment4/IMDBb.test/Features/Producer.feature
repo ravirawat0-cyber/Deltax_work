@@ -20,11 +20,13 @@ Scenario: Get Producer by ID
 	Examples:
 	| URL             | ResponseCode | ResponseData                                                                           |
 	| api/producers/1 | 200          | {"id":1,"name":"Mock Producer","bio":"Mock bio","dob":"1990-12-12T00:00:00","sex":"M"} |
+	| api/producers/2 | 200          | {"id":2,"name":"Mock Producer","bio":"Mock bio","dob":"1990-12-12T00:00:00","sex":"M"} |
 	
 	@InvalidCase
 	Examples:
 	| URL              | ResponseCode | ResponseData                  |
 	| api/producers/20 | 404          | Producer with ID 20 not found |
+	| api/producers/6  | 404          | Producer with ID 6 not found  |
 
 @Create	
 Scenario: Create Producer
@@ -35,8 +37,9 @@ Scenario: Create Producer
 
 	@ValidCase
 	Examples:
-	| URL           | RequestData                                                                 | ResponseCode | ResponseData |
-	| api/producers | {"Name": "Kevin Hart", "Bio": "Kevin bio", "DOB": "1990-12-12", "Sex": "F"} | 200          | 3            |
+	| URL           | RequestData                                                                     | ResponseCode | ResponseData |
+	| api/producers | {"Name": "Kevin Hart", "Bio": "Kevin bio", "DOB": "1990-12-12", "Sex": "F"}     | 200          | 3            |
+	| api/producers | {"Name": "David Franklin", "Bio": "Kevin bio", "DOB": "2000-12-12", "Sex": "F"} | 200          | 3            |
 
 	@InvalidCase
 	Examples:
@@ -56,8 +59,11 @@ Scenario: Update Producer
 
 	@ValidCase
 	Examples:
-	| URL             | RequestData                                                                               | ResponseCode | ResponseData |
-	| api/producers/1 | {"Name": "Kevin Hart", "Bio": "Kevin is hollywood star", "DOB": "1990-12-12", "Sex": "M"} | 200          |              |
+	| URL             | RequestData                                                                                   | ResponseCode | ResponseData |
+	| api/producers/1 | {"Name": "Kevin Hart", "Bio": "Kevin is hollywood star", "DOB": "1990-12-12", "Sex": "M"}     | 200          |              |
+	| api/producers/1 | {"Name": "David Hart", "Bio": "Kevin is hollywood star", "DOB": "1990-12-12", "Sex": "M"}     | 200          |              |
+	| api/producers/1 | {"Name": "David Hart", "Bio": "Kevin is hollywood producer", "DOB": "1990-12-12", "Sex": "M"} | 200          |              |
+	| api/producers/1 | {"Name": "David Hart", "Bio": "Kevin is hollywood producer", "DOB": "2000-12-12", "Sex": "M"} | 200          |              |
 
 	@InvalidCase
 	Examples:
@@ -79,9 +85,11 @@ Scenario: Delete Producer
 	Examples:
 	| URL             | ResponseCode | ResponseData |
 	| api/producers/2 | 200          |              |
+	| api/producers/1 | 200          |              |
 
 	@InValidCase
 	Examples:
 	| URL              | ResponseCode | ResponseData                  |
 	| api/producers/20 | 404          | Producer with ID 20 not found |
+	| api/producers/22 | 404          | Producer with ID 22 not found |
 

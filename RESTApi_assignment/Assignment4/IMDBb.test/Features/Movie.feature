@@ -39,6 +39,7 @@ Scenario: Create Movie
 	Examples:
 	| URL        | RequestData                                                                                                                                                                                                                                                                                             | ResponseCode | ResponseData |
 	| api/movies | {"Name":"Mock Movie 3","YearOfRelease":2017,"Plot":"Mock Plot","ProducerId":1,"ActorIds":"2,1","GenreIds" : "1,2","CoverImageUrl":"https://firebasestorage.googleapis.com/v0/b/imdb-88f70.appspot.com/o/7d12593c-9d19-4be3-82e8-e05f82838162.jpg?alt=media&token=61e071f3-4a8f-4959-b7b8-aa65bbeee0dd"} | 200          | 3            |
+	| api/movies | {"Name":"Mock Movie","YearOfRelease":2020,"Plot":"Mock Plot","ProducerId":2,"ActorIds":"1","GenreIds" : "1,2","CoverImageUrl":"https://firebasestorage.googleapis.com/v0/b/imdb-88f70.appspot.com/o/7d12593c-9d19-4be3-82e8-e05f82838162.jpg?alt=media&token=61e071f3-4a8f-4959-b7b8-aa65bbeee0dd"}     | 200          | 3            |
 
 	@InvalidCase
 	Examples:
@@ -99,3 +100,4 @@ Scenario: Delete Movie
 	Examples:
 	| URL           | ResponseCode | ResponseData               |
 	| api/movies/20 | 404          | Movie with ID 20 not found |
+	| api/movies/23 | 404          | Movie with ID 23 not found |

@@ -20,11 +20,13 @@ Scenario: Get Genre by ID
 	Examples:
 	| URL          | ResponseCode | ResponseData                  |
 	| api/genres/1 | 200          | {"id":1,"name":"Mock Comedy"} |
+	| api/genres/2 | 200          | {"id":2,"name":"Mock Action"} |
 	
 	@InvalidCase
 	Examples:
 	| URL           | ResponseCode | ResponseData               |
 	| api/genres/20 | 404          | Genre with ID 20 not found |
+	| api/genres/10 | 404          | Genre with ID 10 not found |
 
 @Create	
 Scenario: Create Genre
@@ -36,6 +38,7 @@ Scenario: Create Genre
 	@ValidCase
 	Examples:
 	| URL        | RequestData                | ResponseCode | ResponseData |
+	| api/genres | {"Name": "Mock Adventure"} | 200          | 3            |
 	| api/genres | {"Name": "Mock Adventure"} | 200          | 3            |
 
 	@InvalidCase
@@ -52,8 +55,9 @@ Scenario: Update Genre
 
 	@ValidCase
 	Examples:
-	| URL          | RequestData            | ResponseCode | ResponseData |
-	| api/genres/1 | {"Name": "Mock Horror"} | 200          |              |
+	| URL          | RequestData                | ResponseCode | ResponseData |
+	| api/genres/1 | {"Name": "Mock Horror"}    | 200          |              |
+	| api/genres/2 | {"Name": "Mock Adventure"} | 200          |              |
 
 	@InvalidCase
 	Examples:
@@ -71,6 +75,7 @@ Scenario: Delete Genre
 	@ValidCase
 	Examples:
 	| URL          | ResponseCode | ResponseData |
+	| api/genres/1 | 200          |              |
 	| api/genres/2 | 200          |              |
 
 	@InValidCase

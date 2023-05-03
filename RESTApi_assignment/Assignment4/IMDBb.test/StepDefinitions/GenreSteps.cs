@@ -26,7 +26,12 @@ namespace IMDB.test.StepDefinitions
 
         [BeforeScenario]
         public static void Mocks()
-        { 
+        {
+            SetupGenres();
+            GenreMock.MockGenreRepo();
+        }
+        private static void SetupGenres()
+        {
             GenreMock.ListOfGenres = new List<Genre>
             {
                 new Genre
@@ -40,7 +45,6 @@ namespace IMDB.test.StepDefinitions
                     Name = "Mock Action"
                 }
             };
-            GenreMock.MockGenreRepo();
         }
     }
 }
