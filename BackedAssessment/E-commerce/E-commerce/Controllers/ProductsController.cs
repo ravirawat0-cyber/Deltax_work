@@ -16,7 +16,7 @@ namespace E_commerce.Controllers
             _productServices = productServices;
         }
         [HttpGet]
-   
+  
         public IActionResult GetAllProducts()
         {
           return Ok(_productServices.GetAll());
