@@ -1,3 +1,9 @@
+using E_commerce.CustomExceptionMiddleware;
+using E_commerce.Repository;
+using E_commerce.Repository.Interfaces;
+using E_commerce.Services;
+using E_commerce.Services.Interfaces;
+using E_commerce.SqlHelper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -28,10 +34,15 @@ namespace E_commerce
         {
 
             services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "E_commerce", Version = "v1" });
-            });
+            services.AddScoped<DbContext>();
+            services.AddScoped<ExceptionHandlingMiddleware>();
+            services.AddScoped<IProducetRepository, ProductRepository>();
+            services.AddScoped<IProductServices, ProductServices>();
+            services.AddScoped<IDataHelper, DataHelper>();
+            services.AddScoped<IOrderServices , OrderServices>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
+       
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,13 +51,13 @@ namespace E_commerce
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "E_commerce v1"));
             }
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
 
             app.UseAuthorization();
 
